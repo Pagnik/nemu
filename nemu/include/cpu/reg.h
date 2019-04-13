@@ -42,6 +42,11 @@ typedef struct {
   vaddr_t eip;
   */
 
+
+  /*
+    the goal is to introduce 2 ways to access the registers: .gpr[] and .REGNAME,
+    and they must indicate the same memory block.
+  */
   union
   {
     union
