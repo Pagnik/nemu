@@ -52,15 +52,15 @@ static int cmd_si(char *arg) {
 static int cmd_info(char *args) {
   switch (*args) {
     case 'r':
-      printf("eax\t%x\n", cpu.eax);
-      printf("ecx\t%x\n", cpu.ecx);
-      printf("edx\t%x\n", cpu.edx);
-      printf("ebx\t%x\n", cpu.ebx);
-      printf("esp\t%x\n", cpu.esp);
-      printf("ebp\t%x\n", cpu.ebp);
-      printf("esi\t%x\n", cpu.esi);
-      printf("edi\t%x\n", cpu.edi);
-      printf("eip\t%x\n", cpu.eip);
+      printf("eax\t0x%x\n", cpu.eax);
+      printf("ecx\t0x%x\n", cpu.ecx);
+      printf("edx\t0x%x\n", cpu.edx);
+      printf("ebx\t0x%x\n", cpu.ebx);
+      printf("esp\t0x%x\n", cpu.esp);
+      printf("ebp\t0x%x\n", cpu.ebp);
+      printf("esi\t0x%x\n", cpu.esi);
+      printf("edi\t0x%x\n", cpu.edi);
+      printf("eip\t0x%x\n", cpu.eip);
       break;
 
     case 'w':
@@ -84,14 +84,10 @@ static int cmd_x(char *args) {
   uint32_t addr = get_value(expr);
 
 
-  {
-    printf("addr: %x, length: %d\n", addr, length);
-    //return 0;
-  }
 
   for (uint32_t i = addr; i < (addr + length * 4); i += 4) {
     //printf("addr: %x\n", i);
-    printf("%x\n", vaddr_read(i, 4));
+    printf("0x%x\n", vaddr_read(i, 4));
   }
 
   // actually I don't think it should always return 0
