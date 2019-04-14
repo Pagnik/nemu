@@ -7,6 +7,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+
+#include <memory/memory.h>
 void cpu_exec(uint64_t);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -37,16 +39,72 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
+static int get_value(char *expr) {
+  return 0x100000;
+}
+
+static int cmd_si(char *arg) {
+  int n_step = atoi(arg);
+  cpu_exec(n_step);
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  switch (*args) {
+    case 'r':
+      printf("eax\t%x\n", cpu.eax);
+      printf("ecx\t%x\n", cpu.ecx);
+      printf("edx\t%x\n", cpu.edx);
+      printf("ebx\t%x\n", cpu.ebx);
+      printf("esp\t%x\n", cpu.esp);
+      printf("ebp\t%x\n", cpu.ebp);
+      printf("esi\t%x\n", cpu.esi);
+      printf("edi\t%x\n", cpu.edi);
+      printf("eip\t%x\n", cpu.eip);
+      break;
+
+    case 'w':
+      printf("Not yet implemented\n");
+      break;
+
+    default:
+      printf("Unkown args\n");
+      break;
+  }
+
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  int length;
+  args = strtok(args, " ");
+  length = atoi(args);
+  char *expr = args + strlen(args) + 1;
+
+  uint32_t addr = get_value(expr);
+
+
+  for (; addr < (addr + length * 4); addr += 4) {
+    printf("%x\n", vaddr_read(addr, 4));
+  }
+
+  // actually I don't think it should always return 0
+  // but there is an assert inside vaddr_read
+  return 0;
+}
 
 static struct {
   char *name;
   char *description;
   int (*handler) (char *);
 } cmd_table [] = {
-  { "help", "Display informations about all supported commands", cmd_help },
+  { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Single instruction step", cmd_si},
+  { "info", "Print current information", cmd_info},
+  //{ "p", "Print result of expressions", cmd_p},
+  { "x", "Print memory", cmd_x},
   /* TODO: Add more commands */
 
 };
