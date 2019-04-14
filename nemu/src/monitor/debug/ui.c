@@ -84,6 +84,11 @@ static int cmd_x(char *args) {
   uint32_t addr = get_value(expr);
 
 
+  {
+    printf("addr: %x, length: %d\n", addr, length);
+    return 0;
+  }
+
   for (; addr < (addr + length * 4); addr += 4) {
     printf("%x\n", vaddr_read(addr, 4));
   }
