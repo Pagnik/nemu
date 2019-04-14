@@ -86,11 +86,12 @@ static int cmd_x(char *args) {
 
   {
     printf("addr: %x, length: %d\n", addr, length);
-    return 0;
+    //return 0;
   }
 
   for (; addr < (addr + length * 4); addr += 4) {
-    printf("%x\n", vaddr_read(addr, 4));
+    printf("addr: %x\n", addr);
+    //printf("%x\n", vaddr_read(addr, 4));
   }
 
   // actually I don't think it should always return 0
