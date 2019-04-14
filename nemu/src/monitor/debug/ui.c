@@ -89,9 +89,9 @@ static int cmd_x(char *args) {
     //return 0;
   }
 
-  for (; addr < (addr + length * 4); addr += 4) {
-    printf("addr: %x\n", addr);
-    //printf("%x\n", vaddr_read(addr, 4));
+  for (uint32_t i = addr; i < (addr + length * 4); i += 4) {
+    //printf("addr: %x\n", i);
+    printf("%x\n", vaddr_read(i, 4));
   }
 
   // actually I don't think it should always return 0
