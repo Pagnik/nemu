@@ -3,11 +3,15 @@
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
+
+
+ // this implementation of token analysis make me uncomfortable
+
 #include <sys/types.h>
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ
+  TK_NOTYPE = 256, TK_PLUS, TK_EQ, TK_LB, TK_RB, TK_DEC
 
   /* TODO: Add more token types */
 
@@ -23,8 +27,11 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
-  {"==", TK_EQ}         // equal
+  {"\\+", TK_PLUS},         // plus
+  {"==", TK_EQ},        // equal
+  {"\\(", TK_LB},       // left bracket
+  {"\\)", TK_RB},       // right bracket
+  {"[0-9]+", TK_DEC},   // decimal
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -78,9 +85,19 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-
+        tokens[nr_token].type = rules[i].token_type;
         switch (rules[i].token_type) {
-          default: TODO();
+
+          case TK_DEC:
+            if (substr_len > 32) {
+              printf("decimal too long\n");
+              return false;
+            }
+            memcpy(tokens[nr_token].str, substr_start, substr_len);
+            break;
+          default:
+            panic("it should never reach here\n");
+            break;
         }
 
         break;

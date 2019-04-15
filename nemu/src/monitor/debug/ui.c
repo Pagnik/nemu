@@ -48,7 +48,6 @@ static int cmd_si(char *arg) {
   cpu_exec(n_step);
   return 0;
 }
-
 static int cmd_info(char *args) {
   switch (*args) {
     case 'r':
