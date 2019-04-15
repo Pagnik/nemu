@@ -134,5 +134,6 @@ int expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
   //return eval(0, nr_token);
+  *success = true;
   return 0;
 }
