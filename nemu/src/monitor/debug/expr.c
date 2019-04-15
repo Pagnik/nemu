@@ -11,7 +11,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_PLUS, TK_EQ, TK_LB, TK_RB, TK_DEC
+  TK_NOTYPE = 256, TK_PLUS, TK_MINUS, TK_MUL, TK_DIV, TK_EQ, TK_LB, TK_RB, TK_DEC,
 
   /* TODO: Add more token types */
 
@@ -28,6 +28,9 @@ static struct rule {
 
   {" +", TK_NOTYPE},    // spaces
   {"\\+", TK_PLUS},         // plus
+  {"-", TK_MINUS},      // minus
+  {"\\*", TK_MUL},      // multiple
+  {"/", TK_DIV},        // division
   {"==", TK_EQ},        // equal
   {"\\(", TK_LB},       // left bracket
   {"\\)", TK_RB},       // right bracket
@@ -101,8 +104,11 @@ static bool make_token(char *e) {
             }
             printf("\n");
             break;
+
+
+
           default:
-            panic("it should never reach here\n");
+            //panic("it should never reach here\n");
             break;
         }
         nr_token++;
