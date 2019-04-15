@@ -39,9 +39,6 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
-static int get_value(char *expr) {
-  return 0x100000;
-}
 
 static int cmd_si(char *arg) {
   int n_step = atoi(arg);
@@ -78,11 +75,15 @@ static int cmd_x(char *args) {
   int length;
   args = strtok(args, " ");
   length = atoi(args);
-  char *expr = args + strlen(args) + 1;
+  bool s;
+  int v = expr(args + strlen(args) + 1, &s);
 
-  uint32_t addr = get_value(expr);
+  if (!s || (v < 0)) {
+    printf("invalid expression or value\n");
+    return 0;
+  }
 
-
+  uint32_t addr = (uint32_t) v;
 
   for (uint32_t i = addr; i < (addr + length * 4); i += 4) {
     //printf("addr: %x\n", i);

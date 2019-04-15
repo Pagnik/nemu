@@ -94,12 +94,18 @@ static bool make_token(char *e) {
               return false;
             }
             memcpy(tokens[nr_token].str, substr_start, substr_len);
+
+
+            for (int j = 0; j < substr_len; j++) {
+              printf("%c", tokens[nr_token].str[j]);
+            }
+            printf("\n");
             break;
           default:
             panic("it should never reach here\n");
             break;
         }
-
+        nr_token++;
         break;
       }
     }
@@ -113,14 +119,14 @@ static bool make_token(char *e) {
   return true;
 }
 
-uint32_t expr(char *e, bool *success) {
+int expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
-
+  // TODO();
+  //return eval(0, nr_token);
   return 0;
 }
