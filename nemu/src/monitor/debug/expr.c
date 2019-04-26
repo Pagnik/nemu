@@ -91,7 +91,7 @@ static bool make_token(char *e) {
   regmatch_t pmatch;
 
   nr_token = 0;
-  printf("1\n");
+  printf("string: %s\n", e);
   while (e[position] != '\0') {
     printf("2\n");
     /* Try all rules one by one. */
