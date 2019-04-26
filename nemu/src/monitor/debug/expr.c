@@ -254,55 +254,60 @@ static int check_op(int l, int r) {
   int s = 0;
   for (int i = l; i < r; i++) {
 
-    if (s != 0) {
-      continue;
-    }
-    // shouldve made a table here.
-    switch (tokens[i].type) {
-      case TK_LB:
-        s++;
-        break;
-      case TK_RB:
-        s--;
-        break;
-      case TK_MUL:
-      case TK_DIV:
-        if (prio <= 1) {          // all <= because of left-combination
-          prio = 1;
-          pos = i;
-        }
-        break;
-      case TK_PLUS:
-      case TK_MINUS:
-        if (prio <= 2) {
-          prio = 2;
-          pos = i;
-        }
-        break;
-      case TK_EQ:
-      case TK_NEQ:
-        if (prio <= 3) {
-          prio = 3;
-          pos = i;
-        }
-        break;
-      case TK_LGCAND:
-        printf("yes\n");
-        if (prio <= 4) {
-          prio = 4;
-          pos = i;
-        }
-        break;
-      case TK_LGCOR:
-        if (prio <= 5) {
-          prio = 5;
-          pos = i;
-        }
-        break;
+    if (tokens[i].type == TK_LB) {
+      s--;
+    } else if (tokens[i].type == TK_RB) {
+      s++;
+    } else if (s != 0) {
+      // shouldve made a table here.
+      switch (tokens[i].type) {
+        case TK_LB:
+          s++;
+          break;
+        case TK_RB:
+          s--;
+          break;
+        case TK_MUL:
+        case TK_DIV:
+          if (prio <= 1) {          // all <= because of left-combination
+            prio = 1;
+            pos = i;
+          }
+          break;
+        case TK_PLUS:
+        case TK_MINUS:
+          if (prio <= 2) {
+            prio = 2;
+            pos = i;
+          }
+          break;
+        case TK_EQ:
+        case TK_NEQ:
+          if (prio <= 3) {
+            prio = 3;
+            pos = i;
+          }
+          break;
+        case TK_LGCAND:
+          printf("yes\n");
+          if (prio <= 4) {
+            prio = 4;
+            pos = i;
+          }
+          break;
+        case TK_LGCOR:
+          if (prio <= 5) {
+            prio = 5;
+            pos = i;
+          }
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
     }
+
+
   }
   return pos;
 }
