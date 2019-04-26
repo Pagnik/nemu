@@ -324,6 +324,7 @@ static int check_op(int l, int r) {
 
 static int eval(int l, int r) {
   int res;
+  int ret;
   printf("l: %d. r: %d\n", l, r);
   for (int i = l; i < r; i++) {
     printf("%d ", tokens[i].type);
@@ -354,23 +355,24 @@ static int eval(int l, int r) {
   res = check_parentheses(l, r);
   assert(res >= 0);
   if (res > 0) {
-    return eval(l + res, r - res);
+    return ret = eval(l + res, r - res);
   }
 
 
   res = check_neg(l, r);
   if (res == 1) {
-    return -eval(l + 1, r);
+    return ret = -eval(l + 1, r);
   }
 
   res = check_cmpl(l, r);
   if (res == 1) {
-    return !eval(l + 1, r);
+    return ret = !eval(l + 1, r);
   }
 
   res = check_deref(l, r);
   if (res == 1) {
-    return *((int *)eval(l + 1, r));
+    ret = eval(l + 1, r);
+    return *((int *)ret);
   }
 
 
