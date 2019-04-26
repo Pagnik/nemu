@@ -251,10 +251,20 @@ static inline int check_deref(int l, int r) {
 static int check_op(int l, int r) {
   int prio = -1;
   int pos = -1;
-
+  int s = 0;
   for (int i = l; i < r; i++) {
+
+    if (s != 0) {
+      continue;
+    }
     // shouldve made a table here.
     switch (tokens[i].type) {
+      case TK_LB:
+        s++;
+        break;
+      case TK_RB:
+        s--;
+        break;
       case TK_MUL:
       case TK_DIV:
         if (prio <= 1) {          // all <= because of left-combination
@@ -334,6 +344,8 @@ static int eval(int l, int r) {
 
   }
 
+  // in fact lots of redundant work here, but whatever...
+  // I'm not making a compiler... again...
   res = check_parentheses(l, r);
   assert(res >= 0);
   if (res > 0) {
