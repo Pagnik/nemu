@@ -79,7 +79,7 @@ static int cmd_x(char *args) {
   int v = expr(args + strlen(args) + 1, &s);
 
   if (!s || (v < 0)) {
-    printf("invalid expression or value\n");
+    printf("invalid expression or value: %x\n", v);
     return 0;
   }
 

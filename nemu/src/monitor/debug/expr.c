@@ -5,13 +5,19 @@
  */
 
 
- // this implementation of token analysis make me uncomfortable
+ // this implementation of token analysis make me uncomfortable, it's too dummy
 
 #include <sys/types.h>
 #include <regex.h>
 
+
+#include <string.h>
+#include <stdlib.h>
+
 enum {
-  TK_NOTYPE = 256, TK_PLUS, TK_MINUS, TK_MUL, TK_DIV, TK_EQ, TK_LB, TK_RB, TK_DEC,
+  TK_NOTYPE = 256, TK_PLUS, TK_MINUS, TK_MUL, TK_DIV, TK_EQ, TK_LB, TK_RB,
+  TK_DEC, TK_NEG, TK_INC, TK_LGCAND, TK_LGCOR, TK_HEX, TK_CMPL, TK_DEREF,
+  TK_REG,
 
   /* TODO: Add more token types */
 
@@ -27,14 +33,20 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", TK_PLUS},         // plus
-  {"-", TK_MINUS},      // minus
-  {"\\*", TK_MUL},      // multiple
+  {"\\+=", TK_INC},     // increment
+  {"\\&\\&", TK_LGCAND},    // logical and
+  {"||", TK_LGCOR},     // logical or
+  {"\\+", TK_PLUS},     // plus
+  {"-", TK_MINUS},      // minus (or negative)
+  {"\\*", TK_MUL},      // multiple (or dereference)
   {"/", TK_DIV},        // division
   {"==", TK_EQ},        // equal
   {"\\(", TK_LB},       // left bracket
   {"\\)", TK_RB},       // right bracket
+  {"\\$[a-zA-z0-9]+"},  // register
+  {"0x[0-9]+", TK_HEX}, // hexadecimal
   {"[0-9]+", TK_DEC},   // decimal
+  {"!", TK_CMPL},       // one's complement
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -66,6 +78,10 @@ typedef struct token {
 Token tokens[32];
 int nr_token;
 
+
+static int eval(int l, int r);
+
+
 static bool make_token(char *e) {
   int position = 0;
   int i;
@@ -92,6 +108,7 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
 
           case TK_DEC:
+          case TK_HEX:
             if (substr_len > 32) {
               printf("decimal too long\n");
               return false;
@@ -99,16 +116,28 @@ static bool make_token(char *e) {
             memcpy(tokens[nr_token].str, substr_start, substr_len);
 
 
-            for (int j = 0; j < substr_len; j++) {
-              printf("%c", tokens[nr_token].str[j]);
-            }
-            printf("\n");
             break;
 
-
-
+          case TK_MINUS:
+            if (!((nr_token > 0) &&
+            ((tokens[nr_token - 1].type == TK_HEX)
+            || (tokens[nr_token - 1].type == TK_DEC)
+            || (tokens[nr_token - 1].type == TK_REG)
+            || (tokens[nr_token - 1].type == TK_RB)))) {
+              tokens[nr_token].type = TK_NEG;
+            }
+            break;
+          case TK_MUL:
+            if (!((nr_token > 0) &&
+            ((tokens[nr_token - 1].type == TK_HEX)
+            || (tokens[nr_token - 1].type == TK_DEC)
+            || (tokens[nr_token - 1].type == TK_REG)
+            || (tokens[nr_token - 1].type == TK_RB)))) {
+              tokens[nr_token].type = TK_DEREF;
+            }
+            break;
           default:
-            //panic("it should never reach here\n");
+
             break;
         }
         nr_token++;
@@ -133,7 +162,109 @@ int expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
-  //return eval(0, nr_token);
+  //
   *success = true;
-  return 0;
+  return eval(0, nr_token);
+}
+
+static int check_parentheses(int l, int r) {
+  int s = 0;
+  int rightmost_start = -1;    // start of rightmost sequences of ')'
+  for (int i = l; i < r; i++) {
+    if (tokens[i].type == TK_RB) {
+      s--;
+      if (rightmost_start < 0) {
+        rightmost_start = i;
+      }
+    } else {
+      rightmost_start = -1;
+      if (tokens[i].type == TK_LB) {
+        s++;
+      }
+    }
+    if (s < 0) {
+      return -1;
+    }
+  }
+  if (tokens[r - 1].type == TK_RB) {
+    return (r - rightmost_start);
+  } else {
+    return 0;
+  }
+}
+
+static int check_neg(int l, int r) {
+  if (tokens[l].type == TK_NEG) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+static int check_op(int l, int r) {
+  int res = -1;
+  int p = -1;
+  int s = 0;
+  for (int i = l; i < r; i++) {
+    if ((tokens[i].type == TK_PLUS || tokens[i].type == TK_MINUS) && s == 0) {
+      if (p <= 1) {
+        p = 0;
+        res = i;
+      }
+    } else if ((tokens[i].type == TK_MUL || tokens[i].type == TK_DIV) && s == 0) {
+      if (p <= 0) {
+        p = 1;
+        res = i;
+      }
+    } else if (tokens[i].type == TK_LB) {
+      s++;
+    } else if (tokens[i].type == TK_RB) {
+      s--;
+    }
+  }
+  return res;
+}
+
+static int eval(int l, int r) {
+  int res;
+  assert(l < r);
+
+  if (l == r - 1) {
+    assert(tokens[l].type == TK_DEC);
+    return atoi(tokens[l].str);
+  }
+
+  res = check_parentheses(l, r);
+  assert(res >= 0);
+  if (res > 0) {
+    return eval(l + res, r - res);
+  }
+
+
+  res = check_neg(l, r);
+  if (res == 1) {
+    return -eval(l + 1, r);
+  }
+
+  res = check_op(l, r);
+  assert(l <= res && res < r);
+  switch (tokens[res].type) {
+    case TK_PLUS:
+      return eval(l, res) + eval(res + 1, r);
+      break;
+    case TK_MINUS:
+      return eval(l, res) - eval(res + 1, r);
+      break;
+    case TK_MUL:
+      return eval(l, res) * eval(res + 1, r);
+      break;
+    case TK_DIV:
+      return eval(l, res) / eval(res + 1, r);
+      break;
+    default:
+      break;
+  }
+
+  panic("shouldn't reach here\n");
+  return 777;
 }
