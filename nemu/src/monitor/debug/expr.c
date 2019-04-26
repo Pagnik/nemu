@@ -284,14 +284,17 @@ static int eval(int l, int r) {
   assert(l < r);
 
   if (l == r - 1) {
+    uint32_t *regptr = reg_by_name(tokens[l].str);
     switch (tokens[l].type) {
       case TK_DEC:
         return strtol(tokens[l].str, NULL, 10);
       case TK_HEX:
         return strtol(tokens[l].str, NULL, 16);
       case TK_REG:
-        return *reg_by_name(tokens[l].str);
 
+
+        assert(regptr != NULL);
+        return *regptr;
       default:
         assert(0);
     }
@@ -367,4 +370,6 @@ static uint32_t* reg_by_name(char *name) {
       return &(cpu.gpr[i]._32);
     }
   }
+
+  return NULL;
 }
