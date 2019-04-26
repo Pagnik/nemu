@@ -108,11 +108,11 @@ static bool make_token(char *e) {
          */
         tokens[nr_token].type = rules[i].token_type;
         switch (rules[i].token_type) {
-
+          case TK_REG:
           case TK_DEC:
           case TK_HEX:
             if (substr_len > 32) {
-              printf("decimal too long\n");
+              printf("too long\n");
               return false;
             }
             memcpy(tokens[nr_token].str, substr_start, substr_len);
