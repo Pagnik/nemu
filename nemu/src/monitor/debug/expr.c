@@ -170,6 +170,8 @@ int expr(char *e, bool *success) {
   //
   *success = true;
   //return 0x100000;
+
+  printf("nr_token: %d\n", nr_token);
   return eval(0, nr_token);
 }
 

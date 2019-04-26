@@ -98,6 +98,7 @@ static int cmd_x(char *args) {
 static int cmd_p(char *args) {
 
   bool s;
+
   int v = expr(args + strlen(args) + 1, &s);
   printf("expr value of: %d (%x)\n", v, v);
   if (!s || (v < 0)) {
