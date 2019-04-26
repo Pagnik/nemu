@@ -182,6 +182,11 @@ int expr(char *e, bool *success) {
     return 0;
   }
 
+
+  for (int i = 0; i < nr_token; i++) {
+    printf("%d ", tokens[i].type);
+  }
+  printf("\n");
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
   //
