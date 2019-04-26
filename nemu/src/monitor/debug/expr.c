@@ -286,9 +286,9 @@ static int eval(int l, int r) {
   if (l == r - 1) {
     switch (tokens[l].type) {
       case TK_DEC:
-        return strol(tokens[l].str, NULL, 10);
+        return strtol(tokens[l].str, NULL, 10);
       case TK_HEX:
-        return strol(tokens[l].str, NULL, 16);
+        return strtol(tokens[l].str, NULL, 16);
       case TK_REG:
         return *reg_by_name(tokens[l].str);
 
