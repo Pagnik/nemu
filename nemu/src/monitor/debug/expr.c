@@ -101,7 +101,9 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-
+        if (rules[i].token_type == TK_NOTYPE) {
+          continue;
+        }
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
@@ -253,6 +255,7 @@ static int check_op(int l, int r) {
         }
         break;
       case TK_LGCAND:
+        printf("yes\n");
         if (prio <= 4) {
           prio = 4;
           pos = i;
