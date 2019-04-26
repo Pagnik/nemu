@@ -18,9 +18,23 @@
 static uint32_t* reg_by_name(char *name);
 
 enum {
-  TK_NOTYPE = 256, TK_PLUS, TK_MINUS, TK_MUL, TK_DIV, TK_EQ, TK_LB, TK_RB,
-  TK_DEC, TK_NEG, TK_LGCAND, TK_LGCOR, TK_HEX, TK_CMPL, TK_DEREF,
-  TK_REG, TK_NEQ,
+  TK_NOTYPE = 256,
+  TK_PLUS,        // 257
+  TK_MINUS,       //
+  TK_MUL,         // 259
+  TK_DIV,         //
+  TK_EQ,          // 261
+  TK_LB,
+  TK_RB,          // 263
+  TK_DEC,
+  TK_NEG,         // 265
+  TK_LGCAND,
+  TK_LGCOR,       // 267
+  TK_HEX,
+  TK_CMPL,        // 269
+  TK_DEREF,
+  TK_REG,         // 271
+  TK_NEQ,
 
   /* TODO: Add more token types */
 
