@@ -14,10 +14,13 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+static uint32_t* reg_by_name(char *name);
+
 enum {
   TK_NOTYPE = 256, TK_PLUS, TK_MINUS, TK_MUL, TK_DIV, TK_EQ, TK_LB, TK_RB,
-  TK_DEC, TK_NEG, TK_INC, TK_LGCAND, TK_LGCOR, TK_HEX, TK_CMPL, TK_DEREF,
-  TK_REG,
+  TK_DEC, TK_NEG, TK_LGCAND, TK_LGCOR, TK_HEX, TK_CMPL, TK_DEREF,
+  TK_REG, TK_NEQ,
 
   /* TODO: Add more token types */
 
@@ -33,7 +36,6 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
-  {"\\+=", TK_INC},     // increment
   {"\\&\\&", TK_LGCAND},  // logical and
   {"\\|\\|", TK_LGCOR},     // logical or
   {"\\+", TK_PLUS},     // plus
@@ -41,9 +43,10 @@ static struct rule {
   {"\\*", TK_MUL},      // multiple (or dereference)
   {"/", TK_DIV},        // division
   {"==", TK_EQ},        // equal
+  {"!=", TK_NEQ},       // not equal
   {"\\(", TK_LB},       // left bracket
   {"\\)", TK_RB},       // right bracket
-  {"\\$[a-zA-z0-9]+"},  // register
+  {"\\$[a-zA-z0-9]+", TK_REG},  // register
   {"0x[0-9]+", TK_HEX}, // hexadecimal
   {"[0-9]+", TK_DEC},   // decimal
   {"!", TK_CMPL},       // one's complement
@@ -92,7 +95,7 @@ static bool make_token(char *e) {
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
-      printf("trying regex#%d\n", i);
+      //printf("trying rule#%d\n", i);
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
@@ -170,70 +173,129 @@ int expr(char *e, bool *success) {
   //return eval(0, nr_token);
 }
 
+
+// check if the parentheses are legal
+// return the number of parentheses to be skipped
 static int check_parentheses(int l, int r) {
   int s = 0;
-  int rightmost_start = -1;    // start of rightmost sequences of ')'
+  int skip = 1;
   for (int i = l; i < r; i++) {
     if (tokens[i].type == TK_RB) {
       s--;
-      if (rightmost_start < 0) {
-        rightmost_start = i;
-      }
     } else {
-      rightmost_start = -1;
       if (tokens[i].type == TK_LB) {
         s++;
       }
     }
     if (s < 0) {
       return -1;
+    } else if (s == 0 && i != r - 1) {
+      // no outmost parentheses to be skipped.
+      skip = 0;
     }
   }
-  if (tokens[r - 1].type == TK_RB) {
-    return (r - rightmost_start);
-  } else {
-    return 0;
+
+  if (skip) {
+    int i, j;
+    for (i = l, j = r - 1, skip = 0; i <= j; i++, j++) {
+      if (tokens[i].type == TK_LB && tokens[j].type == TK_RB) {
+        skip ++;
+      }
+    }
   }
+
+  return skip;
+
 }
 
-static int check_neg(int l, int r) {
-  if (tokens[l].type == TK_NEG) {
-    return 1;
-  } else {
-    return 0;
-  }
+static inline int check_neg(int l, int r) {
+  return tokens[l].type == TK_NEG;
 }
+
+static inline int check_cmpl(int l, int r) {
+  return tokens[l].type == TK_CMPL;
+}
+
+static inline int check_deref(int l, int r) {
+  return tokens[l].type == TK_DEREF;
+}
+
 
 static int check_op(int l, int r) {
-  int res = -1;
-  int p = -1;
-  int s = 0;
+  int prio = NR_REGEX;
+  int pos;
+
   for (int i = l; i < r; i++) {
-    if ((tokens[i].type == TK_PLUS || tokens[i].type == TK_MINUS) && s == 0) {
-      if (p <= 1) {
-        p = 0;
-        res = i;
-      }
-    } else if ((tokens[i].type == TK_MUL || tokens[i].type == TK_DIV) && s == 0) {
-      if (p <= 0) {
-        p = 1;
-        res = i;
-      }
-    } else if (tokens[i].type == TK_LB) {
-      s++;
-    } else if (tokens[i].type == TK_RB) {
-      s--;
+    // shouldve made a table here.
+    switch (tokens[i].type) {
+      case TK_MUL:
+      case TK_DIV:
+        if (prio <= 1) {          // all <= because of left-combination
+          prio = 1;
+          pos = i;
+        }
+        break;
+      case TK_PLUS:
+      case TK_MINUS:
+        if (prio <= 2) {
+          prio = 2;
+          pos = i;
+        }
+        break;
+      case TK_EQ:
+      case TK_NEQ:
+        if (prio <= 3) {
+          prio = 3;
+          pos = i;
+        }
+        break;
+      case TK_LGCAND:
+        if (prio <= 4) {
+          prio = 4;
+          pos = i;
+        }
+        break;
+      case TK_LGCOR:
+        if (prio <= 5) {
+          prio = 5;
+          pos = i;
+        }
+        break;
+
+      default:
+        break;
     }
   }
-  return res;
+  return pos;
 }
+
+
+
+
+
+
+
+
+
+
 
 static int eval(int l, int r) {
   int res;
   assert(l < r);
 
   if (l == r - 1) {
-    assert(tokens[l].type == TK_DEC);
+    switch (tokens[l].type) {
+      case TK_DEC:
+        return strol(tokens[l].str, NULL, 10);
+      case TK_HEX:
+        return strol(tokens[l].str, NULL, 16);
+      case TK_REG:
+        return *reg_by_name(tokens[l].str);
+
+      default:
+        assert(0);
+    }
+
     return atoi(tokens[l].str);
   }
 
@@ -248,6 +310,17 @@ static int eval(int l, int r) {
   if (res == 1) {
     return -eval(l + 1, r);
   }
+
+  res = check_cmpl(l, r);
+  if (res == 1) {
+    return !eval(l + 1, r);
+  }
+
+  res = check_deref(l, r);
+  if (res == 1) {
+    return *((int *)eval(l + 1, r));
+  }
+
 
   res = check_op(l, r);
   assert(l <= res && res < r);
@@ -264,10 +337,35 @@ static int eval(int l, int r) {
     case TK_DIV:
       return eval(l, res) / eval(res + 1, r);
       break;
+
+    case TK_EQ:
+      return eval(l, res) == eval(res + 1, r);
+      break;
+    case TK_NEQ:
+      return eval(l, res) != eval(res + 1, r);
+      break;
+    case TK_LGCAND:
+      return eval(l, res) && eval(res + 1, r);
+      break;
+    case TK_LGCOR:
+      return eval(l, res) || eval(res + 1, r);
     default:
       break;
   }
 
   panic("shouldn't reach here\n");
   return 777;
+}
+
+
+static uint32_t* reg_by_name(char *name) {
+  static char* names[] = {
+    "$eax", "$ecx", "$edx", "$ebx", "$esp", "$ebp", "$esi", "$edi",
+  };
+  int n_names = sizeof(names) / sizeof(char*);
+  for (int i = 0; i < n_names; i++) {
+    if (strcmp(names[i], name) == 0) {
+      return &(cpu.gpr[i]._32);
+    }
+  }
 }
