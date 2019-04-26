@@ -371,8 +371,8 @@ static int eval(int l, int r) {
 
   res = check_deref(l, r);
   if (res == 1) {
-    ret = eval(l + 1, r);
-    return *((int *)ret);
+    ret = vaddr_read(eval(l + 1, r), 4);
+    return ret;
   }
 
 
