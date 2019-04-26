@@ -102,7 +102,7 @@ static bool make_token(char *e) {
         int substr_len = pmatch.rm_eo;
 
         if (rules[i].token_type == TK_NOTYPE) {
-          continue;
+          break;;
         }
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
