@@ -169,8 +169,8 @@ int expr(char *e, bool *success) {
   // TODO();
   //
   *success = true;
-  return 0x100000;
-  //return eval(0, nr_token);
+  //return 0x100000;
+  return eval(0, nr_token);
 }
 
 
@@ -296,7 +296,6 @@ static int eval(int l, int r) {
         assert(0);
     }
 
-    return atoi(tokens[l].str);
   }
 
   res = check_parentheses(l, r);
