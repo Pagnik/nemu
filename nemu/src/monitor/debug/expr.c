@@ -34,7 +34,7 @@ static struct rule {
 
   {" +", TK_NOTYPE},    // spaces
   {"\\+=", TK_INC},     // increment
-  {"\\&\\&", TK_LGCAND},    // logical and
+  {"\\&\\&", TK_LGCAND},  // logical and
   {"||", TK_LGCOR},     // logical or
   {"\\+", TK_PLUS},     // plus
   {"-", TK_MINUS},      // minus (or negative)
@@ -92,6 +92,7 @@ static bool make_token(char *e) {
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
+      printf("trying regex#%d\n", i);
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
