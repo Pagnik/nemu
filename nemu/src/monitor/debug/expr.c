@@ -222,7 +222,7 @@ static int check_parentheses(int l, int r) {
 
   if (skip) {
     int i, j;
-    for (i = l, j = r - 1, skip = 0; i <= j; i++, j++) {
+    for (i = l, j = r - 1, skip = 0; i <= j; i++, j--) {
       if (tokens[i].type == TK_LB && tokens[j].type == TK_RB) {
         skip ++;
       }
