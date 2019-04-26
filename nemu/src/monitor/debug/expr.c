@@ -223,7 +223,7 @@ static inline int check_deref(int l, int r) {
 
 static int check_op(int l, int r) {
   int prio = NR_REGEX;
-  int pos;
+  int pos = -1;
 
   for (int i = l; i < r; i++) {
     // shouldve made a table here.
