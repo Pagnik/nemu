@@ -77,7 +77,7 @@ static int cmd_x(char *args) {
   length = atoi(args);
   bool s;
   int v = expr(args + strlen(args) + 1, &s);
-  printf("expr value of: %d (%x)\n", v, v);
+  //printf("expr value of: %d (%x)\n", v, v);
   if (!s || (v < 0)) {
     printf("invalid expression or value\n");
     return 0;
@@ -95,6 +95,19 @@ static int cmd_x(char *args) {
   return 0;
 }
 
+static int cmd_p(char *args) {
+
+  bool s;
+  int v = expr(args + strlen(args) + 1, &s);
+  printf("expr value of: %d (%x)\n", v, v);
+  if (!s || (v < 0)) {
+    printf("invalid expression or value\n");
+    return 0;
+  }
+  printf("%d\t(%x)\n", v, v);
+  return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -105,11 +118,14 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Single instruction step", cmd_si},
   { "info", "Print current information", cmd_info},
-  //{ "p", "Print result of expressions", cmd_p},
+  { "p", "Print result of expressions", cmd_p},
   { "x", "Print memory", cmd_x},
+
   /* TODO: Add more commands */
 
 };
+
+
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
