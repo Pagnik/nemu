@@ -77,9 +77,9 @@ static int cmd_x(char *args) {
   length = atoi(args);
   bool s;
   int v = expr(args + strlen(args) + 1, &s);
-
+  printf("expr value of: %d (%x)\n", v, v);
   if (!s || (v < 0)) {
-    printf("invalid expression or value: %x\n", v);
+    printf("invalid expression or value\n");
     return 0;
   }
 
