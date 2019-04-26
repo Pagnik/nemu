@@ -35,7 +35,7 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+=", TK_INC},     // increment
   {"\\&\\&", TK_LGCAND},  // logical and
-  {"||", TK_LGCOR},     // logical or
+  {"\\|\\|", TK_LGCOR},     // logical or
   {"\\+", TK_PLUS},     // plus
   {"-", TK_MINUS},      // minus (or negative)
   {"\\*", TK_MUL},      // multiple (or dereference)
