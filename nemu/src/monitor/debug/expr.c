@@ -258,7 +258,7 @@ static int check_op(int l, int r) {
       s--;
     } else if (tokens[i].type == TK_RB) {
       s++;
-    } else if (s != 0) {
+    } else if (s == 0) {
       // shouldve made a table here.
       switch (tokens[i].type) {
         case TK_LB:
