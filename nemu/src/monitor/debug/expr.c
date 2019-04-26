@@ -307,11 +307,11 @@ static int check_op(int l, int r) {
 
 static int eval(int l, int r) {
   int res;
-  /*printf("l: %d. r: %d\n", l, r);
+  printf("l: %d. r: %d\n", l, r);
   for (int i = 0; i < r; i++) {
     printf("%d ", tokens[i].type);
   }
-  printf("\n");*/
+  printf("\n");
   assert(l < r);
 
   if (l == r - 1) {
