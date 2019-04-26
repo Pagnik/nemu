@@ -99,7 +99,7 @@ static int cmd_p(char *args) {
 
   bool s;
 
-  int v = expr(args + strlen(args) + 1, &s);
+  int v = expr(args, &s);
   printf("expr value of: %d (%x)\n", v, v);
   if (!s || (v < 0)) {
     printf("invalid expression or value\n");
