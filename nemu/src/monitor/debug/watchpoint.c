@@ -57,6 +57,7 @@ int free_wp(int n) {
   wp->prior = free_;
   wp->next = free_->next;
   free_->next = wp;
+  return 0;
 }
 
 
