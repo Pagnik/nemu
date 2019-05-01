@@ -44,7 +44,10 @@ WP *new_wp() {
 }
 
 
-void free_wp(int n) {
+int free_wp(int n) {
+  if (n < 0 || n >= NR_WP) {
+    return -1;
+  }
   WP *wp = &wp_pool[n];
   
   wp->prior->next = wp->next;

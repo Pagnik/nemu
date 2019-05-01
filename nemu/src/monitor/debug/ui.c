@@ -113,7 +113,7 @@ static int cmd_w(char *args) {
 
 static int cmd_d(char *args) {
   int n = strtol(args, NULL, 10);
-  free_wp(n);
+  return free_wp(n);
 }
 
 static struct {
