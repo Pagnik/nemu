@@ -5,11 +5,12 @@
 
 typedef struct watchpoint {
   int NO;
-  struct watchpoint *next;
+  struct watchpoint *next, *prior;
 
   /* TODO: Add more members if necessary */
-
-
+  int last_val;
+  char expr[100];
+  int counter;    
 } WP;
 
 #endif

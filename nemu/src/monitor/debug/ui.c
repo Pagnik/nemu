@@ -60,7 +60,7 @@ static int cmd_info(char *args) {
       break;
 
     case 'w':
-      printf("Not yet implemented\n");
+      print_wp();
       break;
 
     default:
@@ -104,6 +104,18 @@ static int cmd_p(char *args) {
   return 0;
 }
 
+static int cmd_w(char *args) {
+  WP *wp = new_wp();
+  strcpy(wp->expr, args);
+  printf("watchpoint #%d\n", wp->NO);
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  int n = strtol(args, NULL, 10);
+  free_wp(n);
+}
+
 static struct {
   char *name;
   char *description;
@@ -116,7 +128,8 @@ static struct {
   { "info", "Print current information", cmd_info},
   { "p", "Print result of expressions", cmd_p},
   { "x", "Print memory", cmd_x},
-
+  { "w", "Add watchpoint", cmd_w},
+  { "d", "Delete watchpoint", cmd_d}
   /* TODO: Add more commands */
 
 };
