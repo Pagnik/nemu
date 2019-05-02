@@ -7,6 +7,7 @@
 
  // this implementation of token analysis make me uncomfortable, it's too dummy
 
+
 #include <sys/types.h>
 #include <regex.h>
 
@@ -14,6 +15,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define min(a, b) ((a < b) ? (a) : (b))
 
 static uint32_t* reg_by_name(char *name);
 
