@@ -216,7 +216,7 @@ static int check_parentheses(int l, int r) {
       //p++;
       s++;
     } else {
-      skip = min(p, i);
+      skip = min(skip, i);
       if (tokens[i].type == TK_RB) {
         //p++;
         s--;
