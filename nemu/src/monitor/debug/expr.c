@@ -201,21 +201,31 @@ int expr(char *e, bool *success) {
 }
 
 
+//(2+(1+2)+(3+4));
+
+
 // check if the parentheses are legal
 // return the number of parentheses to be skipped
 static int check_parentheses(int l, int r) {
   int s = 0;
   int skip = r + 1;
+  int p = -1;
   for (int i = l; i < r; i++) {
-    if (tokens[i].type == TK_RB) {
-      s--;
-      skip = min(skip, i);
-    } else if (tokens[i].type == TK_LB)  {
+
+    if (tokens[i].type == TK_LB)  {
+      //p++;
       s++;
-    }
-    if (s < 0) {
-      return -1;
-    }
+    } else {
+      skip = min(p, i);
+      if (tokens[i].type == TK_RB) {
+        //p++;
+        s--;
+        
+      }
+      if (s < 0) {
+        return -1;
+      }
+    } 
   }
   if (s != 0) {
     return -1;
