@@ -101,8 +101,8 @@ int check_wp() {
 }
 
 void print_wp() {
-  while (cur->next->NO != -1) {
-    cur = cur->next;
+  while (cur->prior->NO != -1) {
+    cur = cur->prior;
     printf("watchpoint #%d\t%s:\t%d\n", cur->NO,
       cur->expr, cur->last_val);
   }
