@@ -351,7 +351,7 @@ static int eval(int l, int r) {
   // in fact lots of redundant work here, but whatever...
   // I'm not making a compiler... again...
   res = check_parentheses(l, r);
-  //printf("peel %d\n", res);
+  printf("peel %d\n", res);
   assert(res >= 0);
   if (res > 0) {
     return ret = eval(l + res, r - res);
