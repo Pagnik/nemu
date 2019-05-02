@@ -222,14 +222,6 @@ static int check_parentheses(int l, int r) {
   if (s != 0) {
     return -1;
   }
-  if (skip) {
-    int i, j;
-    for (i = l, j = r - 1, skip = 0; i <= j; i++, j--) {
-      if (tokens[i].type == TK_LB && tokens[j].type == TK_RB) {
-        skip ++;
-      }
-    }
-  }
 
   return skip;
 
@@ -261,43 +253,46 @@ static int check_op(int l, int r) {
     } else if (s == 0) {
       // shouldve made a table here.
       switch (tokens[i].type) {
-        case TK_LB:
-          s++;
-          break;
-        case TK_RB:
-          s--;
-          break;
+
+        /*case TK_CMPL:
+        case TK_DEREF:
+        case TK_NEG:
+          if (prio <= 1) {
+            prio = 1;
+            pos = 1;
+          }
+          
+          break;*/
         case TK_MUL:
         case TK_DIV:
-          if (prio <= 1) {          // all <= because of left-combination
-            prio = 1;
+          if (prio <= 2) {          // all <= because of left-combination
+            prio = 2;
             pos = i;
           }
           break;
         case TK_PLUS:
         case TK_MINUS:
-          if (prio <= 2) {
-            prio = 2;
-            pos = i;
-          }
-          break;
-        case TK_EQ:
-        case TK_NEQ:
           if (prio <= 3) {
             prio = 3;
             pos = i;
           }
           break;
-        case TK_LGCAND:
-          printf("yes\n");
+        case TK_EQ:
+        case TK_NEQ:
           if (prio <= 4) {
             prio = 4;
             pos = i;
           }
           break;
-        case TK_LGCOR:
+        case TK_LGCAND:
           if (prio <= 5) {
             prio = 5;
+            pos = i;
+          }
+          break;
+        case TK_LGCOR:
+          if (prio <= 6) {
+            prio = 6;
             pos = i;
           }
           break;
