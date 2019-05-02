@@ -14,6 +14,9 @@ static WP *cur;
 // NO -2 : head of free list
 // NO -1 : head of used list
 void init_wp_pool() {
+  head = &wp_dummy[0];
+  free_ = &wp_dummy[1];
+  cur = head;
   int i;
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
@@ -23,11 +26,13 @@ void init_wp_pool() {
   for (int i = 0; i < 2; i++) {
     wp_dummy[i].NO = -i - 1;
   }
-  wp_pool[NR_WP - 1].next = wp_pool;
-  wp_pool[0].prior = &wp_pool[NR_WP - 1];
-  head = wp_pool;
-  free_ = &wp_pool[1];
-  cur = head;
+  wp_pool[NR_WP - 1].next = free_;
+  wp_pool[0].prior = free_;
+  free_->next = &wp_pool[0];
+  free_->prior = &wp_pool[NR_WP - 1];
+  head->next = head;
+  head->prior = head;
+  
 }
 
 /* TODO: Implement the functionality of watchpoint */
