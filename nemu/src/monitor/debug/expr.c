@@ -209,7 +209,7 @@ int expr(char *e, bool *success) {
 static int check_parentheses(int l, int r) {
   int s = 0;
   int skip = r + 1;
-  int p = -1;
+  //int p = -1;
   for (int i = l; i < r; i++) {
 
     if (tokens[i].type == TK_LB)  {
