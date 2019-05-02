@@ -203,36 +203,22 @@ int expr(char *e, bool *success) {
 // return the number of parentheses to be skipped
 static int check_parentheses(int l, int r) {
   int s = 0;
-  int skip = 1;
+  int skip = r + 1;
   for (int i = l; i < r; i++) {
     if (tokens[i].type == TK_RB) {
       s--;
-    } else {
-      if (tokens[i].type == TK_LB) {
-        s++;
-      }
+      skip = min(skip, i);
+    } else if (tokens[i].type == TK_LB)  {
+      s++;
     }
     if (s < 0) {
       return -1;
-    } else if (s == 0 && i != r - 1) {
-      // no outmost parentheses to be skipped.
-      skip = 0;
     }
   }
   if (s != 0) {
     return -1;
   }
-  if (skip) {
-    int i, j;
-    for (i = l, j = r - 1, skip = 0; i <= j; i++, j--) {
-      if (tokens[i].type == TK_LB && tokens[j].type == TK_RB) {
-        skip ++;
-      }
-    }
-  }
-
-  return skip;
-
+  return (skip - 1 - l);
 }
 
 static inline int check_neg(int l, int r) {
