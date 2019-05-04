@@ -14,3 +14,7 @@ submit: clean
 	STUID=$(STUID) STUNAME=$(STUNAME) bash -c "$$(curl -s http://moon.nju.edu.cn/people/yyjiang/teach/submit.sh)"
 
 .PHONY: default clean submit
+
+
+count:	
+	@sh sta.sh
