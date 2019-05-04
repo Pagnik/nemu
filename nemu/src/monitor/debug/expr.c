@@ -202,45 +202,76 @@ int expr(char *e, bool *success) {
 
 
 //(2+(1+2)+(3+4));
+struct __b_t {
+    /*enum {
+      LB, RB,
+    } type;*/
+    int pos;
+  };
 
+struct __segment_t {
+  int l, r;
+};
+
+int cmp_l(const void *x, const void *y) {
+  return (((struct __segment_t *)(x))->l - ((struct __segment_t *)(y))->l);
+}
+
+int cmp_r(const void *x, const void *y) {
+  return (((struct __segment_t *)(x))->r - ((struct __segment_t *)(y))->r);
+}
 
 // check if the parentheses are legal
 // return the number of parentheses to be skipped
 static int check_parentheses(int l, int r) {
-  int s = 0;
-  int p = r + 1;
-  int flag = 0;
-  //int p = -1;
-  for (int i = l; i < r; i++) {
 
+  
+
+
+  static struct __b_t __b[100];
+  static struct __segment_t __segment[2][100];
+  int top = -1;
+  int n_segment = 0;
+  
+
+  for (int i = l; i < r; i++) {
     if (tokens[i].type == TK_LB)  {
-      //p++;
-      s++;
-    } else {
-      if (tokens[i].type == TK_RB) {
-        //p++;
-        s--;
-        if (s < 0) {
-          return -1;
-        }
-        if (!flag) {
-          p = i - 2;
-        }
+      top++;
+      __b[top].pos = i;
+    } else if (tokens[i].type == TK_RB) {
+      if (top == -1) {
+        return -1;
       } else {
-        if (!flag) {
-          p = i - 1;
-        }
+        __segment[0][n_segment].l = __segment[1][n_segment].l = __b[top].pos;
+        __segment[0][n_segment].r = __segment[1][n_segment].r = i;
+        n_segment++;
       }
-      flag = 1;
+      top--;
     } 
   }
-  if (s != 0) {
+  
+  if (top != -1) {
     return -1;
   }
   
-  return (p - l + 1);
+  qsort(__segment[0], n_segment, sizeof(int) * n_segment, cmp_l);
+  qsort(__segment[1], n_segment, sizeof(int) * n_segment, cmp_r);
+
+  int i;
+  for (i = 0; i < n_segment; i++) {
+    if ((__segment[0][i].l != __segment[1][n_segment - i - 1].l)
+        || (__segment[0][i].l != (i + l))) {
+      break;
+    }
+  }
+  return i;
+
+
+
 }
 
+
+/*
 static inline int check_neg(int l, int r) {
   return tokens[l].type == TK_NEG;
 }
@@ -252,7 +283,7 @@ static inline int check_cmpl(int l, int r) {
 static inline int check_deref(int l, int r) {
   return tokens[l].type == TK_DEREF;
 }
-
+*/
 
 static int check_op(int l, int r) {
   int prio = -1;
@@ -267,43 +298,46 @@ static int check_op(int l, int r) {
     } else if (s == 0) {
       // shouldve made a table here.
       switch (tokens[i].type) {
-        case TK_LB:
-          s++;
-          break;
-        case TK_RB:
-          s--;
+
+        case TK_CMPL:
+        case TK_DEREF:
+        case TK_NEG:
+          if (prio <= 1) {
+            prio = 1;
+            pos = 1;
+          }
+          
           break;
         case TK_MUL:
         case TK_DIV:
-          if (prio <= 1) {          // all <= because of left-combination
-            prio = 1;
+          if (prio <= 2) {          // all <= because of left-combination
+            prio = 2;
             pos = i;
           }
           break;
         case TK_PLUS:
         case TK_MINUS:
-          if (prio <= 2) {
-            prio = 2;
-            pos = i;
-          }
-          break;
-        case TK_EQ:
-        case TK_NEQ:
           if (prio <= 3) {
             prio = 3;
             pos = i;
           }
           break;
-        case TK_LGCAND:
-          printf("yes\n");
+        case TK_EQ:
+        case TK_NEQ:
           if (prio <= 4) {
             prio = 4;
             pos = i;
           }
           break;
-        case TK_LGCOR:
+        case TK_LGCAND:
           if (prio <= 5) {
             prio = 5;
+            pos = i;
+          }
+          break;
+        case TK_LGCOR:
+          if (prio <= 6) {
+            prio = 6;
             pos = i;
           }
           break;
@@ -366,6 +400,7 @@ static int eval(int l, int r) {
   }
 
 
+  /*
   res = check_neg(l, r);
   if (res == 1) {
     return ret = -eval(l + 1, r);
@@ -381,12 +416,24 @@ static int eval(int l, int r) {
     ret = vaddr_read(eval(l + 1, r), 4);
     return ret;
   }
-
+  */
 
   res = check_op(l, r);
   printf("op pos: %d\n", res);
   assert(l <= res && res < r);
   switch (tokens[res].type) {
+
+    case TK_NEG:
+      return -eval(res + 1, r);
+      break;
+
+    case TK_CMPL:
+      return !eval(res + 1, r);
+      break;
+
+    case TK_DEREF:
+      return vaddr_read(eval(res + 1, r), 4);
+      break;
     case TK_PLUS:
       return eval(l, res) + eval(res + 1, r);
       break;
@@ -433,3 +480,5 @@ static uint32_t* reg_by_name(char *name) {
 
   return NULL;
 }
+
+
