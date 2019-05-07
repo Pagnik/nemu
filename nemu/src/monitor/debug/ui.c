@@ -7,6 +7,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+
+#include <memory/memory.h>
 void cpu_exec(uint64_t);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -38,18 +40,101 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *arg) {
+  int n_step = atoi(arg);
+  cpu_exec(n_step);
+  return 0;
+}
+static int cmd_info(char *args) {
+  switch (*args) {
+    case 'r':
+      printf("eax\t0x%x\n", cpu.eax);
+      printf("ecx\t0x%x\n", cpu.ecx);
+      printf("edx\t0x%x\n", cpu.edx);
+      printf("ebx\t0x%x\n", cpu.ebx);
+      printf("esp\t0x%x\n", cpu.esp);
+      printf("ebp\t0x%x\n", cpu.ebp);
+      printf("esi\t0x%x\n", cpu.esi);
+      printf("edi\t0x%x\n", cpu.edi);
+      printf("eip\t0x%x\n", cpu.eip);
+      break;
+
+    case 'w':
+      print_wp();
+      break;
+
+    default:
+      printf("Unkown args\n");
+      break;
+  }
+
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  int length;
+  args = strtok(args, " ");
+  length = atoi(args);
+  bool s;
+  int v = expr(args + strlen(args) + 1, &s);
+  //printf("expr value of: %d (%x)\n", v, v);
+  if (!s || (v < 0)) {
+    printf("invalid expression or value\n");
+    return 0;
+  }
+
+  uint32_t addr = (uint32_t) v;
+
+  for (uint32_t i = addr; i < (addr + length * 4); i += 4) {
+    //printf("addr: %x\n", i);
+    printf("0x%x\n", vaddr_read(i, 4));
+  }
+
+  // actually I don't think it should always return 0
+  // but there is an assert inside vaddr_read
+  return 0;
+}
+
+static int cmd_p(char *args) {
+
+  bool s;
+
+  int v = expr(args, &s);
+  printf("%d\t(%x)\n", v, v);
+  return 0;
+}
+
+static int cmd_w(char *args) {
+  WP *wp = new_wp();
+  strcpy(wp->expr, args);
+  printf("watchpoint #%d\n", wp->NO);
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  int n = strtol(args, NULL, 10);
+  return free_wp(n);
+}
+
 static struct {
   char *name;
   char *description;
   int (*handler) (char *);
 } cmd_table [] = {
-  { "help", "Display informations about all supported commands", cmd_help },
+  { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Single instruction step", cmd_si},
+  { "info", "Print current information", cmd_info},
+  { "p", "Print result of expressions", cmd_p},
+  { "x", "Print memory", cmd_x},
+  { "w", "Add watchpoint", cmd_w},
+  { "d", "Delete watchpoint", cmd_d}
   /* TODO: Add more commands */
 
 };
+
+
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
