@@ -9,9 +9,9 @@ make_EHelper(add) {
 make_EHelper(sub) {
   //TODO();
   if (id_src->width == 1 && (id_dest->width == 2 || id_dest->width == 4)) {
-    rtl_sext(id_src->val, id_src->val, id_src->width);
+    rtl_sext(&id_src->val, &id_src->val, id_src->width);
   }
-  rtl_sub(id_dest, id_dest, id_src);
+  rtl_sub(&id_dest->val, &id_dest->val, &id_src->val);
   print_asm_template2(sub);
 }
 
