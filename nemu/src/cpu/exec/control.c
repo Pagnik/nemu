@@ -30,7 +30,7 @@ make_EHelper(call) {
   // the target address is calculated at the decode stage
   //TODO();
   //printf_debug("$eip = %x\n", cpu.eip);
-  rtl_push(&cpu.eip);
+  rtl_push(&decoding.seq_eip);
   //printf_debug("[esp] = %x\n", vaddr_read(cpu.esp, 4));
   rtl_j(decoding.jmp_eip);
 
