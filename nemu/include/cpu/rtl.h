@@ -162,9 +162,9 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // signed 
 
   printf_debug("ssssssssssssss\n");
-  rtl_lr(&at, 32 - width * 8, 1); printf_debug("ssssssssssssss\n");
-  interpret_rtl_shl(dest, src1, &at); printf_debug("ssssssssssssss\n");
-  interpret_rtl_sar(dest, dest, &at); printf_debug("ssssssssssssss\n");
+
+  rtl_shli(dest, src1, 32 - width * 8);
+  rtl_sari(dest, dest, 32 - width * 8); 
   
 
 }
