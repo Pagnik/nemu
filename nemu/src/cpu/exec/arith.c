@@ -9,16 +9,17 @@ make_EHelper(add) {
 make_EHelper(sub) {
   //TODO();
 
-  printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
+  //printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
   if (id_src->width == 1 && (id_dest->width == 2 || id_dest->width == 4)) {
+    printf_debug("src width: %d\n", id_src->width);
     rtl_sext(&id_src->val, &id_src->val, id_src->width);
   }
-  printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
+  //printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
   rtl_sub(&id_dest->val, &id_dest->val, &id_src->val);
-  printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
+  //printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
   operand_write(id_dest, &id_dest->val);
-  printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
-  printf_debug("%s  %s\n", id_dest->str, id_src->str);
+  //printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
+  //printf_debug("%s  %s\n", id_dest->str, id_src->str);
   print_asm_template2(sub);
 }
 
