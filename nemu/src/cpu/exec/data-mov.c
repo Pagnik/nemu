@@ -10,9 +10,9 @@ make_EHelper(push) {
 
   printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
   
-  printf_debug("width: %d\n", decoding.dest.width);
-  //rtl_push(&id_dest);
-  printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
+  printf_debug("val: %x, width: %d\n", id_dest->val, id_dest->width);
+  rtl_push(id_dest->val);
+  printf_debug("esp: %x, *esp: %x\n", cpu.esp, vaddr_read(cpu.esp, id_dest->width));
   print_asm_template1(push);
 }
 
