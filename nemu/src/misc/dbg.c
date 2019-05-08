@@ -1,6 +1,7 @@
 
 
 #include <stdarg.h>
+#include <stdio.h>
 #define DBG
 void printf_debug(const char *format, ...) {
     #ifdef DBG
