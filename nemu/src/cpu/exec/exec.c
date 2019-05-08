@@ -226,7 +226,9 @@ static inline void update_eip(void) {
 
 void exec_wrapper(bool print_flag) {
   vaddr_t ori_eip = cpu.eip;
-
+  if (cpu.eip == 0x100013) {
+    printf_debug("esp%x\n", cpu.esp);
+  }
 #ifdef DEBUG
   decoding.p = decoding.asm_buf;
   decoding.p += sprintf(decoding.p, "%8x:   ", ori_eip);
@@ -244,15 +246,21 @@ void exec_wrapper(bool print_flag) {
     puts(decoding.asm_buf);
   }
 #endif
+
+  if (cpu.eip == 0x100013) {
+    printf_debug("esp%x\n", cpu.esp);
+  }
+
+  
   update_eip();
 
 
-
-  if (cpu.eip == 0x100010) {
+/*
+  if (cpu.eip == 0x100013) {
     printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
   } else if (cpu.eip == 0x100011) {
     printf_debug("esp: %x, *esp: %x\n", cpu.esp, vaddr_read(cpu.esp, 4));
-  }
+  }*/
 #if defined(DIFF_TEST)
   void difftest_step(uint32_t);
   difftest_step(ori_eip);
