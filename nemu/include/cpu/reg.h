@@ -47,17 +47,14 @@ typedef struct {
     the goal is to introduce 2 ways to access the registers: .gpr[] and .REGNAME,
     and they must indicate the same memory block.
   */
-  union
-  {
-    union
-    {
+  union {
+    union {
       uint32_t _32;
       uint16_t _16;
       uint8_t _8[2];
     } gpr[8];
 
-    struct
-    {
+    struct {
       rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
       vaddr_t eip;
     };
@@ -65,7 +62,22 @@ typedef struct {
 
 
   // EFLAGS is not a gpr.
-  rtlreg_t eflags;
+
+  union {
+    struct {
+      unsigned CF: 1;
+      unsigned dont_care1: 1;
+      unsigned PF: 1;
+      unsigned dont_care3: 1;
+      unsigned AF: 1;
+      unsigned dont_care5: 1;
+      unsigned ZF: 1;
+      unsigned SF: 1;
+      unsigned dont_care8_9_10: 3;
+      unsigned OF: 1;
+    };
+    rtlreg_t eflags;
+  };
 } CPU_state;
 
 extern CPU_state cpu;

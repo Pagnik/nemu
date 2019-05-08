@@ -106,6 +106,10 @@ static inline void interpret_rtl_host_sm(void *addr, const rtlreg_t *src1, int l
 
 static inline void interpret_rtl_setrelop(uint32_t relop, rtlreg_t *dest,
     const rtlreg_t *src1, const rtlreg_t *src2) {
+
+      QUESTION("hey, why can you directly use *dest here?\n\
+      you can't use the power of emulator\n\
+      this should be hardware logic!");
   *dest = interpret_relop(relop, *src1, *src2);
 }
 
@@ -161,7 +165,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // a << >>   
   // signed 
 
-  printf_debug("ssssssssssssss\n");
+  //printf_debug("ssssssssssssss\n");
 
   rtl_shli(dest, src1, 32 - width * 8);
   rtl_sari(dest, dest, 32 - width * 8); 
@@ -191,20 +195,37 @@ static inline void rtl_pop(rtlreg_t* dest) {
 static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
     const rtlreg_t *src1, int imm) {
   // dest <- (src1 relop imm ? 1 : 0)
-  TODO();
+  // TODO();
+
+  rtl_li(dest, imm);
+  interpret_rtl_setrelop(relop, dest, src1, dest);
+
 }
+
+
+
 
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
-  TODO();
+  //TODO();
+  rtl_shri(dest, src1, width * 8 - 1);
+  rtl_andi(dest, dest, 1);
 }
 
+/*
+enum {
+  CF = 0, dont_care1, PF, dont_care3, AF, dont_care5, ZF, SF, 
+  dont_care8, dont_care9, dont_care10, OF,
+};
+*/
 #define make_rtl_setget_eflags(f) \
   static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \
-    TODO(); \
+    /*TODO();*/ \
+    cpu.f &= *src; \
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
-    TODO(); \
+   /* TODO();*/ \
+   *dest = cpu.f; \
   }
 
 make_rtl_setget_eflags(CF)
@@ -214,12 +235,18 @@ make_rtl_setget_eflags(SF)
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  TODO();
+  //TODO();
+  rtl_shli(&at, result, 32 - width * 8);
+  rtl_setrelopi(RELOP_EQ, &at, &at, 0);
+  rtl_set_ZF(&at);
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-  TODO();
+  //TODO();
+  rtl_msb(&at, result, width);
+  rtl_andi(&at, &at, 1);
+  rtl_set_SF(&at);
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
