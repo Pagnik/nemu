@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #define DBG
-void inline printf_debug(const char *format, ...) {
+void printf_debug(const char *format, ...) {
     #ifdef DBG
 /*
     printf("%s\\ ", __FILE__);
@@ -20,11 +20,3 @@ void inline printf_debug(const char *format, ...) {
     #endif
 }
 
-
-
-void QUESTION(char *str) {
-    printf("%s\\ ", __FILE__);
-    printf("%s\\ ", __func__);
-    printf("%d:\t", __LINE__);
-    printf("%s\n", str);
-}

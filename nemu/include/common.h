@@ -43,7 +43,8 @@ typedef uint16_t ioaddr_t;
 void inline printf_debug(const char *format, ...);
 void inline QUESTION(char *str);
 */
-#define DBG
+
+
 void printf_debug(const char *format, ...);
 
 
