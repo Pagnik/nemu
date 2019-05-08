@@ -15,6 +15,8 @@ make_EHelper(and) {
 
 make_EHelper(xor) {
   // TODO();
+
+  printf_debug("$eax = %x\n", cpu.eax);
   rtl_xor(&id_dest->val, &id_dest->val, &id_src->val);
 
   rtl_li(&t0, 0);
@@ -23,6 +25,7 @@ make_EHelper(xor) {
   rtl_update_ZFSF(&id_dest->val, id_dest->width);
   operand_write(id_dest, &id_dest->val);
   print_asm_template2(xor);
+  printf_debug("$eax = %x\n", cpu.eax);
 }
 
 make_EHelper(or) {
