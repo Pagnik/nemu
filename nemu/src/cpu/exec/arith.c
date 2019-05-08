@@ -15,6 +15,7 @@ make_EHelper(sub) {
   }
   
   rtl_sub(&id_dest->val, &id_dest->val, &id_src->val);
+  printf_debug("%s  %s\n", id_dest->str, id_src->str);
   print_asm_template2(sub);
 }
 
