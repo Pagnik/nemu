@@ -62,6 +62,10 @@ typedef struct {
       vaddr_t eip;
     };
   };
+
+
+  // EFLAGS is not a gpr.
+  rtlreg_t eflags;
 } CPU_state;
 
 extern CPU_state cpu;

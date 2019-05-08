@@ -36,6 +36,7 @@ static make_EHelper(2byte_esc);
     /* 0x04 */	item4, item5, item6, item7  \
   }; \
 static make_EHelper(name) { \
+  printf_debug("ext_opcode: %d\n", decoding.ext_opcode); \
   idex(eip, &concat(opcode_table_, name)[decoding.ext_opcode]); \
 }
 
