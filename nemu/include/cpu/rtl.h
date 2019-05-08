@@ -219,6 +219,9 @@ enum {
 };
 */
 #define make_rtl_setget_eflags(f) \
+  static inline void concat(rtl_clear_, f) (void) {\
+    cpu.f = 0;  \
+  } \
   static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \
     /*TODO();*/ \
     cpu.f &= *src; \
@@ -226,7 +229,8 @@ enum {
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
    /* TODO();*/ \
    *dest = cpu.f; \
-  }
+  } 
+  
 
 make_rtl_setget_eflags(CF)
 make_rtl_setget_eflags(OF)
