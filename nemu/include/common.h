@@ -38,7 +38,7 @@ typedef uint16_t ioaddr_t;
 
 
 
-
+#include <stdarg.h>
 void printf_debug(const char *format, ...);
 
 
