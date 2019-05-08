@@ -92,7 +92,7 @@ opcode_entry opcode_table [512] = {
   /* 0x44 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x48 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x4c */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x50 */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x50 */	IDEX(r, push), EMPTY, EMPTY, EMPTY,
   /* 0x54 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x58 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x5c */	EMPTY, EMPTY, EMPTY, EMPTY,
@@ -247,6 +247,13 @@ void exec_wrapper(bool print_flag) {
 
   update_eip();
 
+
+
+  if (cpu.eip == 0x100010) {
+    printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
+  } else if (cpu.eip == 100011) {
+    printf_debug("esp: %x, *esp: %x\n", cpu.esp, vaddr_read(cpu.esp, 4));
+  }
 #if defined(DIFF_TEST)
   void difftest_step(uint32_t);
   difftest_step(ori_eip);
