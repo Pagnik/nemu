@@ -244,14 +244,13 @@ void exec_wrapper(bool print_flag) {
     puts(decoding.asm_buf);
   }
 #endif
-
   update_eip();
 
 
 
   if (cpu.eip == 0x100010) {
     printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
-  } else if (cpu.eip == 100011) {
+  } else if (cpu.eip == 0x100011) {
     printf_debug("esp: %x, *esp: %x\n", cpu.esp, vaddr_read(cpu.esp, 4));
   }
 #if defined(DIFF_TEST)
