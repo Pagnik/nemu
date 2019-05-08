@@ -16,6 +16,8 @@ make_EHelper(sub) {
   printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
   rtl_sub(&id_dest->val, &id_dest->val, &id_src->val);
   printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
+  operand_write(id_dest, &id_dest->val);
+  printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
   printf_debug("%s  %s\n", id_dest->str, id_src->str);
   print_asm_template2(sub);
 }
