@@ -206,8 +206,12 @@ make_DHelper(test_I) {
 
 make_DHelper(SI2E) {
   assert(id_dest->width == 2 || id_dest->width == 4);
+
+  // fill id_dest according to the mod/rm
   decode_op_rm(eip, id_dest, true, NULL, false);
   id_src->width = 1;
+
+  // fetch that immediate.
   decode_op_SI(eip, id_src, true);
   if (id_dest->width == 2) {
     id_src->val &= 0xffff;
