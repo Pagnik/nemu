@@ -48,7 +48,7 @@ void inline QUESTION(char *str);
 void printf_debug(const char *format, ...);
 
 
-
+#if 1
 #define QUESTION(str) \
 {   \
     printf("%s\\ ", __FILE__);\
@@ -56,5 +56,13 @@ void printf_debug(const char *format, ...);
     printf("%d:\t", __LINE__);\
     printf("%s\n", str);\
 }
+#else
+#define QUESTION(str) 0
+
+#endif
+
+
+
+
 
 #endif
