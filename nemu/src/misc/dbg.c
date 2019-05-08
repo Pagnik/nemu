@@ -1,5 +1,5 @@
 
-
+/*
 #include <stdarg.h>
 #include <stdio.h>
 #define DBG
@@ -28,3 +28,4 @@ void inline QUESTION(char *str) {
     printf("%d:\t", __LINE__);
     printf("%s\n", str);
 }
+*/
