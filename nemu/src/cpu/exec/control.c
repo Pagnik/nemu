@@ -31,7 +31,7 @@ make_EHelper(call) {
   //TODO();
 
   rtl_push(&cpu.eip);
-  cpu.eip = decoding.jmp_eip;
+  rtl_j(decoding.jmp_eip);
 
 
   print_asm("call %x", decoding.jmp_eip);
