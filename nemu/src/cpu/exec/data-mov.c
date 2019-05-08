@@ -8,9 +8,11 @@ make_EHelper(mov) {
 make_EHelper(push) {
   //TODO();
 
-
-  rtl_push(&id_src->val);
-
+  printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
+  
+  printf_debug("width: %d\n", decoding.dest.width);
+  //rtl_push(&id_dest);
+  printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
   print_asm_template1(push);
 }
 
