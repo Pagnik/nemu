@@ -19,7 +19,7 @@ include Makefile.git
 CC = gcc
 LD = gcc
 INCLUDES  = $(addprefix -I, $(INC_DIR))
-CFLAGS   += -O2 -MMD -Wall  -ggdb3 $(INCLUDES) -fomit-frame-pointer # -Werror 
+CFLAGS   += -O2 -MMD -Wall -Werror -ggdb3 $(INCLUDES) -fomit-frame-pointer
 CFLAGS   += -DDIFF_TEST_QEMU
 
 # Files to be compiled
@@ -60,7 +60,7 @@ gdb: $(BINARY)
 	$(call git_commit, "gdb")
 	gdb -s $(BINARY) --args $(NEMU_EXEC)
 
-clean:
+clean: 
 	-rm -rf $(BUILD_DIR)
 	$(MAKE) -C tools/gen-expr clean
 	$(MAKE) -C tools/qemu-diff clean

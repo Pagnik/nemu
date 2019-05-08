@@ -78,8 +78,6 @@ void load_addr(vaddr_t *eip, ModR_M *m, Operand *rm) {
   rm->type = OP_TYPE_MEM;
 }
 
-
-// can be used by both EXT_OPCODE and REG
 void read_ModR_M(vaddr_t *eip, Operand *rm, bool load_rm_val, Operand *reg, bool load_reg_val) {
   ModR_M m;
   m.val = instr_fetch(eip, 1);
@@ -96,7 +94,6 @@ void read_ModR_M(vaddr_t *eip, Operand *rm, bool load_rm_val, Operand *reg, bool
 #endif
   }
 
-  // mod == 3, then the operand is a register.
   if (m.mod == 3) {
     rm->type = OP_TYPE_REG;
     rm->reg = m.R_M;
@@ -108,7 +105,6 @@ void read_ModR_M(vaddr_t *eip, Operand *rm, bool load_rm_val, Operand *reg, bool
     sprintf(rm->str, "%%%s", reg_name(m.R_M, rm->width));
 #endif
   }
-  // otherwise the operand is a memory somehow addressed.
   else {
     load_addr(eip, &m, rm);
     if (load_rm_val) {

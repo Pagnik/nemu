@@ -27,7 +27,6 @@ static inline void interpret_rtl_mv(rtlreg_t* dest, const rtlreg_t *src1) {
   } \
   /* Actually those of imm version are pseudo rtl instructions,
    * but we define them here in the same macro */ \
-  /* immediate to $at.*/ \
   static inline void concat(rtl_, name ## i) (rtlreg_t* dest, const rtlreg_t* src1, int imm) { \
     rtl_li(&at, imm); \
     rtl_ ## name (dest, src1, &at); \
@@ -109,7 +108,6 @@ static inline void interpret_rtl_setrelop(uint32_t relop, rtlreg_t *dest,
   *dest = interpret_relop(relop, *src1, *src2);
 }
 
-
 static inline void interpret_rtl_j(vaddr_t target) {
   cpu.eip = target;
   decoding_set_jmp(true);
@@ -157,33 +155,19 @@ static inline void rtl_not(rtlreg_t *dest, const rtlreg_t* src1) {
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
-  //TODO(); 
-  // a << >>   
-  // signed 
-  rtl_lr(at, 32 - width * 8, 1);
-  interpret_rtl_shl(dest, src1, at);
-  interpret_rtl_sar(dest, dest, at);
-  
-
+  TODO();
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
   // M[esp] <- src1
-  //TODO();
-
-  //printf_debug("esp: %x, esp - 4: %x\n", cpu.esp, cpu.esp - 4);
-  rtl_subi(&cpu.esp, &cpu.esp, 4);
-  //printf_debug("esp: %x\n", cpu.esp);
-  interpret_rtl_sm(&cpu.esp, src1, 4);
+  TODO();
 }
 
 static inline void rtl_pop(rtlreg_t* dest) {
   // dest <- M[esp]
   // esp <- esp + 4
-  //TODO();
-  interpret_rtl_lm(dest, &cpu.esp, 4);
-  rtl_addi(&cpu.esp, &cpu.esp, 4);
+  TODO();
 }
 
 static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
