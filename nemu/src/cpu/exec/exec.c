@@ -246,7 +246,7 @@ void exec_wrapper(bool print_flag) {
     puts(decoding.asm_buf);
   }
 #endif
-
+ printf_debug("eip%x\n", cpu.eip);
   if (cpu.eip == 0x100026) {
     printf_debug("eip%x\n", cpu.eip);
   }
@@ -254,7 +254,7 @@ void exec_wrapper(bool print_flag) {
 
   update_eip();
 
-
+ printf_debug("eip%x\n", cpu.eip);
 /*
   if (cpu.eip == 0x100013) {
     printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
