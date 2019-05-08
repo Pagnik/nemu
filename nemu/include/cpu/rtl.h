@@ -165,9 +165,9 @@ static inline void rtl_push(const rtlreg_t* src1) {
   // M[esp] <- src1
   //TODO();
 
-  printf_debug("esp: %x, esp - 4: %x\n", cpu.esp, cpu.esp - 4);
+  //printf_debug("esp: %x, esp - 4: %x\n", cpu.esp, cpu.esp - 4);
   rtl_subi(&cpu.esp, &cpu.esp, 4);
-  printf_debug("esp: %x\n", cpu.esp);
+  //printf_debug("esp: %x\n", cpu.esp);
   interpret_rtl_sm(&cpu.esp, src1, 4);
 }
 

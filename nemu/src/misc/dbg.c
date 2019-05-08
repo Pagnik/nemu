@@ -2,9 +2,14 @@
 
 #include <stdarg.h>
 #define DBG
-void printf_debug(const char *format, ...)
-{
+void printf_debug(const char *format, ...) {
     #ifdef DBG
+
+    printf("%s\\ ", __FILE__);
+    printf("%s\\ ", __func__);
+    printf("%d:\t", __LINE__);
+    
+
     va_list args;
     va_start(args, format);
 
@@ -12,4 +17,13 @@ void printf_debug(const char *format, ...)
 
     va_end(args);
     #endif
+}
+
+
+
+void QUESTION(char *str) {
+    printf("%s\\ ", __FILE__);
+    printf("%s\\ ", __func__);
+    printf("%d:\t", __LINE__);
+    printf("%s\n", str);
 }
