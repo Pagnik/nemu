@@ -247,8 +247,8 @@ void exec_wrapper(bool print_flag) {
   }
 #endif
 
-  if (cpu.eip == 0x100013) {
-    printf_debug("esp%x\n", cpu.esp);
+  if (cpu.eip == 0x100026) {
+    printf_debug("eip%x\n", cpu.eip);
   }
 
 
