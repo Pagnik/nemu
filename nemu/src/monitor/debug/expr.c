@@ -372,6 +372,8 @@ static int eval(int l, int r) {
 
 
   res = check_op(l, r);
+
+  ;;
   assert(l <= res && res < r);
   switch (tokens[res].type) {
     case TK_NEG:
