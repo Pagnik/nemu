@@ -419,6 +419,9 @@ static int eval(int l, int r) {
 
 
 static uint32_t* reg_by_name(char *name) {
+  if (strcmp(name, "$eip") == 0) {
+    return &cpu.eip;
+  }
   static char* names[] = {
     "$eax", "$ecx", "$edx", "$ebx", "$esp", "$ebp", "$esi", "$edi",
   };
