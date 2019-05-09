@@ -68,8 +68,12 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
-  TODO();
+  //TODO();
+  WRONG, CHECK E2G DHELPER
+  rtl_sext(&t0, &id_src2->val, id_src->width);
+  rtl_add(&t1, &id_src->val, &t0);
 
+  rtl_update_ZFSF(&t1, id_src->width);
   print_asm_template2(cmp);
 }
 
