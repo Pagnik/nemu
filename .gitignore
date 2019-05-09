@@ -6,3 +6,7 @@
 !.gitignore
 !init.sh
 /nemu/build
+/.vscode
+/nexus-am
+/navy-apps
+/nanos-lite

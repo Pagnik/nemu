@@ -41,7 +41,7 @@ static make_EHelper(name) { \
 
 /* 0x80, 0x81, 0x83 */
 make_group(gp1,
-    EMPTY, EMPTY, EMPTY, EMPTY,
+    EX(add), EMPTY, EMPTY, EMPTY,
     EMPTY, EX(sub), EMPTY, EMPTY)
 
   /* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
@@ -246,15 +246,15 @@ void exec_wrapper(bool print_flag) {
     puts(decoding.asm_buf);
   }
 #endif
- printf_debug("eip%x\n", cpu.eip);
+ //printf_debug("eip%x\n", cpu.eip);
   if (cpu.eip == 0x100026) {
-    printf_debug("eip%x\n", cpu.eip);
+    //printf_debug("eip%x\n", cpu.eip);
   }
 
 
   update_eip();
 
- printf_debug("eip%x\n", cpu.eip);
+ //printf_debug("eip%x\n", cpu.eip);
 /*
   if (cpu.eip == 0x100013) {
     printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);

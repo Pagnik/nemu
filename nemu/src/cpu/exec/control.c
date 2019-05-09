@@ -46,7 +46,7 @@ make_EHelper(ret) {
   //printf_debug("[esp] = %x\n", vaddr_read(cpu.esp, 4));
   rtl_pop(&cpu.eip);
   rtl_j(cpu.eip);
-  printf_debug("$eip = %x\n", cpu.eip);
+  //printf_debug("$eip = %x\n", cpu.eip);
   print_asm("ret");
 }
 
