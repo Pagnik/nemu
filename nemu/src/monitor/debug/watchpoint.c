@@ -76,7 +76,7 @@ int free_wp(int n) {
 int check_wp() {
   WP *cur = head;
   int res = 0;
-  printf_debug("??????\n");
+  //printf_debug("??????\n");
   while (cur->next->NO != -1) {
     cur = cur->next;
     if (cur->counter == 0) {
@@ -89,7 +89,7 @@ int check_wp() {
     if (success == false) {
       assert(0);
     } else {
-      printf_debug("watchpoint #%d:\t%s = %d -> %d\n", cur->NO, cur->expr, cur->last_val, val);
+     // printf_debug("watchpoint #%d:\t%s = %d -> %d\n", cur->NO, cur->expr, cur->last_val, val);
       if (val != cur->last_val) {
         printf("watchpoint #%d\t%s:\t%d\t->\t%d\n", cur->NO,
                 cur->expr, cur->last_val, val);

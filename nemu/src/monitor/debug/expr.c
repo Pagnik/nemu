@@ -105,7 +105,7 @@ static bool make_token(char *e) {
   regmatch_t pmatch;
 
   nr_token = 0;
-  printf("string: %s\n", e);
+  //print_debugf("string: %s\n", e);
   while (e[position] != '\0') {
     //printf("2\n");
     /* Try all rules one by one. */
@@ -185,16 +185,16 @@ int expr(char *e, bool *success) {
 
 
   for (int i = 0; i < nr_token; i++) {
-    printf("%d %s\n", tokens[i].type, tokens[i].str);
+    //print_debugf("%d %s\n", tokens[i].type, tokens[i].str);
   }
-  printf("\n");
+  //print_debugf("\n");
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
   //
   *success = true;
   //return 0x100000;
 
-  printf("nr_token: %d\n", nr_token);
+  //print_debugf("nr_token: %d\n", nr_token);
   return eval(0, nr_token);
 }
 
@@ -320,11 +320,11 @@ static int check_op(int l, int r) {
 static int eval(int l, int r) {
   int res;
   int ret;
-  printf("l: %d. r: %d\n", l, r);
+  //print_debugf("l: %d. r: %d\n", l, r);
   for (int i = l; i < r; i++) {
-    printf("%d ", tokens[i].type);
+    //print_debugf("%d ", tokens[i].type);
   }
-  printf("\n");
+  //print_debugf("\n");
   assert(l < r);
 
   if (l == r - 1) {
