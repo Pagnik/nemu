@@ -15,21 +15,69 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  */
 
 typedef struct {
-  struct {
+  /*struct {
+
+
     uint32_t _32;
     uint16_t _16;
     uint8_t _8[2];
-  } gpr[8];
+
+    union
+    {
+        uint32_t _32;
+        uint16_t _16;
+        uint8_t _8[2];
+    };
+  } gpr[8];*/
 
   /* Do NOT change the order of the GPRs' definitions. */
 
   /* In NEMU, rtlreg_t is exactly uint32_t. This makes RTL instructions
    * in PA2 able to directly access these registers.
    */
+
+  /*
   rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
 
   vaddr_t eip;
+  */
 
+
+  /*
+    the goal is to introduce 2 ways to access the registers: .gpr[] and .REGNAME,
+    and they must indicate the same memory block.
+  */
+  union {
+    union {
+      uint32_t _32;
+      uint16_t _16;
+      uint8_t _8[2];
+    } gpr[8];
+
+    struct {
+      rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
+      vaddr_t eip;
+    };
+  };
+
+
+  // EFLAGS is not a gpr.
+
+  union {
+    struct {
+      unsigned CF: 1;
+      unsigned dont_care1: 1;
+      unsigned PF: 1;
+      unsigned dont_care3: 1;
+      unsigned AF: 1;
+      unsigned dont_care5: 1;
+      unsigned ZF: 1;
+      unsigned SF: 1;
+      unsigned dont_care8_9_10: 3;
+      unsigned OF: 1;
+    };
+    rtlreg_t eflags;
+  };
 } CPU_state;
 
 extern CPU_state cpu;

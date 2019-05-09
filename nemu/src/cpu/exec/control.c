@@ -24,16 +24,29 @@ make_EHelper(jmp_rm) {
   print_asm("jmp *%s", id_dest->str);
 }
 
+
+
 make_EHelper(call) {
   // the target address is calculated at the decode stage
-  TODO();
+  //TODO();
+  //printf_debug("$eip = %x\n", cpu.eip);
+  rtl_push(&decoding.seq_eip);
+  //printf_debug("[esp] = %x\n", vaddr_read(cpu.esp, 4));
+  rtl_j(decoding.jmp_eip);
+
 
   print_asm("call %x", decoding.jmp_eip);
 }
 
-make_EHelper(ret) {
-  TODO();
 
+
+make_EHelper(ret) {
+  //TODO();
+
+  //printf_debug("[esp] = %x\n", vaddr_read(cpu.esp, 4));
+  rtl_pop(&cpu.eip);
+  rtl_j(cpu.eip);
+  //printf_debug("$eip = %x\n", cpu.eip);
   print_asm("ret");
 }
 

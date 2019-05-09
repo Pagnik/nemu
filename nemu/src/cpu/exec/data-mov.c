@@ -6,14 +6,24 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  TODO();
+  //TODO();
 
+  //printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
+  
+  //printf_debug("val: %x, width: %d\n", id_dest->val, id_dest->width);
+
+
+  QUESTION("how the width of register is set");
+  rtl_push(&id_dest->val);
+  //printf_debug("esp: %x, *esp: %x\n", cpu.esp, vaddr_read(cpu.esp, id_dest->width));
   print_asm_template1(push);
 }
 
 make_EHelper(pop) {
-  TODO();
+  // TODO();
 
+
+  rtl_pop(&id_dest->val);
   print_asm_template1(pop);
 }
 

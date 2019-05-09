@@ -32,4 +32,37 @@ typedef uint16_t ioaddr_t;
 #include "debug.h"
 #include "macro.h"
 
+
+
+
+
+
+
+#include <stdarg.h>
+/*
+void inline printf_debug(const char *format, ...);
+void inline QUESTION(char *str);
+*/
+
+
+void printf_debug(const char *format, ...);
+
+
+#if 0
+#define QUESTION(str) \
+{   \
+    printf("%s\\ ", __FILE__);\
+    printf("%s\\ ", __func__);\
+    printf("%d:\t", __LINE__);\
+    printf("%s\n", str);\
+}
+#else
+#define QUESTION(str) 0
+
+#endif
+
+
+
+
+
 #endif
