@@ -80,6 +80,7 @@ int check_wp() {
   while (cur->next->NO != -1) {
     cur = cur->next;
     if (cur->counter == 0) {
+      cur->counter++;
       continue;
     }
     cur->counter++;
