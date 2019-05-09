@@ -77,6 +77,8 @@ int free_wp(int n) {
 
 int check_wp() {
   //WP *wp = head;
+
+  printf_debug("??????\n");
   while (cur->next->NO != -1) {
     cur = cur->next;
     if (cur->counter == 0) {
