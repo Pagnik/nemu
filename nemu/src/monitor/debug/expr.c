@@ -259,7 +259,7 @@ static int check_op(int l, int r) {
         case TK_NEG:
           if (prio <= 1) {
             prio = 1;
-            pos = 1;
+            pos = i;
           }
           
           break;
