@@ -185,7 +185,7 @@ int expr(char *e, bool *success) {
 
 
   for (int i = 0; i < nr_token; i++) {
-    printf("%d ", tokens[i].type);
+    printf("%d %s\n", tokens[i].type, tokens[i].str);
   }
   printf("\n");
   /* TODO: Insert codes to evaluate the expression. */
