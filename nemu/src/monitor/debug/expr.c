@@ -160,8 +160,8 @@ static bool make_token(char *e) {
 
             break;
         }
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        /*Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+            i, rules[i].regex, position, substr_len, substr_len, substr_start);*/
         position += substr_len;
         nr_token++;
         break;
