@@ -7,16 +7,14 @@ static WP wp_pool[NR_WP];
 
 static WP wp_dummy[2];
 static WP *head, *free_;
-static WP *cur;
-
 
 
 // NO -2 : head of free list
 // NO -1 : head of used list
 void init_wp_pool() {
+
   head = &wp_dummy[0];
   free_ = &wp_dummy[1];
-  cur = head;
   int i;
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
@@ -76,8 +74,8 @@ int free_wp(int n) {
 
 
 int check_wp() {
-  //WP *wp = head;
-
+  WP *cur = head;
+  int res = 0;
   printf_debug("??????\n");
   while (cur->next->NO != -1) {
     cur = cur->next;
@@ -92,20 +90,19 @@ int check_wp() {
     } else {
       printf_debug("watchpoint #%d:\t%s = %d -> %d\n", cur->expr, cur->last_val, val);
       if (val != cur->last_val) {
-      printf("watchpoint #%d\t%s:\t%d\t->\t%d\n", cur->NO,
-      cur->expr, cur->last_val, val);
-      cur->last_val = val;
-      return cur->NO;
-      } else {
-        cur->last_val = val;
+        printf("watchpoint #%d\t%s:\t%d\t->\t%d\n", cur->NO,
+                cur->expr, cur->last_val, val);
+        res = 1;
       }
+      cur->last_val = val;
     } 
   }
-  cur = head;
-  return 0;
+
+  return res;
 }
 
 void print_wp() {
+  WP *cur = head;
   while (cur->prior->NO != -1) {
     cur = cur->prior;
     printf("watchpoint #%d\t%s:\t%d\n", cur->NO,
