@@ -134,7 +134,7 @@ static bool make_token(char *e) {
               return false;
             }
             memcpy(tokens[nr_token].str, substr_start, substr_len);
-
+            tokens[nr_token].str[substr_len] = '\0';
 
             break;
 
