@@ -60,8 +60,8 @@ static struct rule {
   {"!=", TK_NEQ},       // not equal
   {"\\(", TK_LB},       // left bracket
   {"\\)", TK_RB},       // right bracket
-  {"\\$[a-zA-z0-9]+", TK_REG},  // register
-  {"0x[0-9]+", TK_HEX}, // hexadecimal
+  {"\\$[a-zA-Z0-9]+", TK_REG},  // register
+  {"0x[0-9a-fA-F]+", TK_HEX}, // hexadecimal
   {"[0-9]+", TK_DEC},   // decimal
   {"!", TK_CMPL},       // one's complement
 };
