@@ -89,7 +89,7 @@ int check_wp() {
     if (success == false) {
       assert(0);
     } else {
-      printf_debug("watchpoint #%d:\t%s = %d -> %d\n", cur->expr, cur->last_val, val);
+      printf_debug("watchpoint #%d:\t%s = %d -> %d\n", cur->NO, cur->expr, cur->last_val, val);
       if (val != cur->last_val) {
         printf("watchpoint #%d\t%s:\t%d\t->\t%d\n", cur->NO,
                 cur->expr, cur->last_val, val);
