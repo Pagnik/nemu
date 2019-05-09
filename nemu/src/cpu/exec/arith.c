@@ -1,68 +1,13 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-  // TODO();
+  TODO();
 
-  
-
-
-  if (id_src->width == 1 && (id_dest->width == 2 || id_dest->width == 4)) {
-    rtl_sext(&id_src->val, &id_src->val, id_src->width);
-  }
-  rtl_add(&t0, &id_dest->val, &id_src->val);
-
-  rtl_update_ZFSF(&t0, id_dest->width);
-
-  rtl_setrelop(RELOP_LTU, &t1, &t0, &id_src->val);  // t1 = (a + b) < b
-
-  rtl_set_CF(&t1);
-
-
-
-  // sign(a) == sign(b) && sign(b) != sign(c)
-  rtl_msb(&t1, &id_dest->val, id_dest->width);
-  rtl_msb(&t2, &id_src->val, id_src->width);
-  rtl_setrelop(RELOP_EQ, &t1, &t1, &t2);
-  rtl_msb(&t3, &t0, id_dest->width);
-  rtl_xor(&t2, &t2, &t3);
-  rtl_and(&t1, &t1, &t2);
-  rtl_set_OF(&t1);
-
-
-  operand_write(id_dest, &t0);
   print_asm_template2(add);
 }
 
 make_EHelper(sub) {
-  //TODO();
-
-  //printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
-  if (id_src->width == 1 && (id_dest->width == 2 || id_dest->width == 4)) {
-    rtl_sext(&id_src->val, &id_src->val, id_src->width);
-  }
-  rtl_sub(&t0, &id_dest->val, &id_src->val);
-  //printf_debug("%s  %s\n", id_dest->str, id_src->str);
-  rtl_update_ZFSF(&t0, id_dest->width);
-
-  // a - b = c,  CF = (a < b)
-  rtl_setrelop(RELOP_LTU, &t1, &id_src->val, &id_dest->val);  // t1: (a < b)
-  rtl_set_CF(&t1);
-
-
-  // a - b = c, OF =  (sign(a) != sign(b)) && (sign(b) == sign(c))
-  rtl_msb(&t1, &id_dest->val, id_dest->width);    // t1: sign(a)
-  rtl_msb(&t2, &id_src->val, id_src->width);      // t2: sign(b)
-  rtl_xor(&t1, &t1, &t2);     // t1: sign(a) != sign(b)
-
-  rtl_msb(&t3, &t0, id_dest->width);  // t3: sign(c)
-  rtl_setrelop(RELOP_EQ, &t2, &t2, &t3);           // t2: sign(b) == sign(c)
-
-  rtl_and(&t1, &t1, &t2);
-  rtl_set_OF(&t1);
-
-  operand_write(id_dest, &t0);
-
-
+  TODO();
 
   print_asm_template2(sub);
 }
@@ -115,9 +60,6 @@ make_EHelper(adc) {
 }
 
 make_EHelper(sbb) {
-
-  QUESTION("Why don't signext here?");
-
   rtl_sub(&t2, &id_dest->val, &id_src->val);
   rtl_setrelop(RELOP_LTU, &t3, &id_dest->val, &t2);
   rtl_get_CF(&t1);

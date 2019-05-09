@@ -27,7 +27,6 @@ static inline void interpret_rtl_mv(rtlreg_t* dest, const rtlreg_t *src1) {
   } \
   /* Actually those of imm version are pseudo rtl instructions,
    * but we define them here in the same macro */ \
-  /* immediate to $at.*/ \
   static inline void concat(rtl_, name ## i) (rtlreg_t* dest, const rtlreg_t* src1, int imm) { \
     rtl_li(&at, imm); \
     rtl_ ## name (dest, src1, &at); \
@@ -106,13 +105,8 @@ static inline void interpret_rtl_host_sm(void *addr, const rtlreg_t *src1, int l
 
 static inline void interpret_rtl_setrelop(uint32_t relop, rtlreg_t *dest,
     const rtlreg_t *src1, const rtlreg_t *src2) {
-
-      QUESTION("hey, why can you directly use *dest here?\n\
-      you can't use the power of emulator\n\
-      this should be hardware logic!");
   *dest = interpret_relop(relop, *src1, *src2);
 }
-
 
 static inline void interpret_rtl_j(vaddr_t target) {
   cpu.eip = target;
@@ -161,73 +155,39 @@ static inline void rtl_not(rtlreg_t *dest, const rtlreg_t* src1) {
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
-  //TODO(); 
-  // a << >>   
-  // signed 
-
-  //printf_debug("ssssssssssssss\n");
-
-  rtl_shli(dest, src1, 32 - width * 8);
-  rtl_sari(dest, dest, 32 - width * 8); 
-  
-
+  TODO();
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
   // M[esp] <- src1
-  //TODO();
-
-  //printf_debug("esp: %x, esp - 4: %x\n", cpu.esp, cpu.esp - 4);
-  rtl_subi(&cpu.esp, &cpu.esp, 4);
-  //printf_debug("esp: %x\n", cpu.esp);
-  interpret_rtl_sm(&cpu.esp, src1, 4);
+  TODO();
 }
 
 static inline void rtl_pop(rtlreg_t* dest) {
   // dest <- M[esp]
   // esp <- esp + 4
-  //TODO();
-  interpret_rtl_lm(dest, &cpu.esp, 4);
-  rtl_addi(&cpu.esp, &cpu.esp, 4);
+  TODO();
 }
 
 static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
     const rtlreg_t *src1, int imm) {
   // dest <- (src1 relop imm ? 1 : 0)
-  // TODO();
-
-  rtl_li(dest, imm);
-  interpret_rtl_setrelop(relop, dest, src1, dest);
-
+  TODO();
 }
-
-
-
 
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
-  //TODO();
-  rtl_shri(dest, src1, width * 8 - 1);
-  rtl_andi(dest, dest, 1);
+  TODO();
 }
 
-/*
-enum {
-  CF = 0, dont_care1, PF, dont_care3, AF, dont_care5, ZF, SF, 
-  dont_care8, dont_care9, dont_care10, OF,
-};
-*/
 #define make_rtl_setget_eflags(f) \
   static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \
-    /*TODO();*/ \
-    cpu.f &= *src; \
+    TODO(); \
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
-   /* TODO();*/ \
-   *dest = cpu.f; \
-  } 
-  
+    TODO(); \
+  }
 
 make_rtl_setget_eflags(CF)
 make_rtl_setget_eflags(OF)
@@ -236,18 +196,12 @@ make_rtl_setget_eflags(SF)
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  //TODO();
-  rtl_shli(&at, result, 32 - width * 8);
-  rtl_setrelopi(RELOP_EQ, &at, &at, 0);
-  rtl_set_ZF(&at);
+  TODO();
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-  //TODO();
-  rtl_msb(&at, result, width);
-  rtl_andi(&at, &at, 1);
-  rtl_set_SF(&at);
+  TODO();
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
