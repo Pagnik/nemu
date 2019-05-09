@@ -87,14 +87,17 @@ int check_wp() {
     int val = expr(cur->expr, &success);
     if (success == false) {
       assert(0);
-    } else if (val != cur->last_val) {
+    } else {
+      printf_debug("watchpoint #%d:\t%s = %d -> %d\n", cur->expr, cur->last_val, val);
+      if (val != cur->last_val) {
       printf("watchpoint #%d\t%s:\t%d\t->\t%d\n", cur->NO,
       cur->expr, cur->last_val, val);
       cur->last_val = val;
       return cur->NO;
-    } else {
-      cur->last_val = val;
-    }
+      } else {
+        cur->last_val = val;
+      }
+    } 
   }
   cur = head;
   return 0;
