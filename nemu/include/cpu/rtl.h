@@ -199,8 +199,8 @@ static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
   // dest <- (src1 relop imm ? 1 : 0)
   // TODO();
   
-  rtl_li(at2, imm);
-  interpret_rtl_setrelop(relop, dest, src1, at2);
+  rtl_li(&at2, imm);
+  interpret_rtl_setrelop(relop, dest, src1, &at2);
 
 }
 
