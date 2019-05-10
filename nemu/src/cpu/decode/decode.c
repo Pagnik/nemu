@@ -32,7 +32,7 @@ static inline make_DopHelper(I) {
 /* sign immediate */
 static inline make_DopHelper(SI) {
   assert(op->width == 1 || op->width == 4);
-  
+
   op->type = OP_TYPE_IMM;
 
   /* TODO: Use instr_fetch() to read `op->width' bytes of memory
@@ -43,7 +43,21 @@ static inline make_DopHelper(SI) {
    */
   
   //TODO();
-  op->simm = (signed) instr_fetch(eip, op->width);
+
+  switch (op->width) {
+    case 1: {
+
+      signed char ib = (signed char) instr_fetch(eip, 1);
+      op->simm = (int32_t) ib;
+      break;
+    }
+
+    case 2: {
+      op->simm = (int32_t) instr_fetch(eip, 4);
+      break;
+    }
+  }
+  
   rtl_li(&op->val, op->simm);
 
 #ifdef DEBUG
