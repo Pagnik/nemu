@@ -56,13 +56,13 @@ typedef struct {
 
     struct {
       rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
-      vaddr_t eip;
+      
     };
   };
 
 
   // EFLAGS is not a gpr.
-
+  vaddr_t eip;
   union {
     struct {
       unsigned CF: 1;
