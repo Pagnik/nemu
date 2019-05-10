@@ -52,7 +52,7 @@ static inline make_DopHelper(SI) {
       break;
     }
 
-    case 2: {
+    case 4: {
       op->simm = (int32_t) instr_fetch(eip, 4);
       break;
     }
