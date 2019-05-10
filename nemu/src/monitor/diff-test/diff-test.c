@@ -119,7 +119,7 @@ void difftest_step(uint32_t eip) {
 
 
 
-  typedef struct  {
+  /*typedef struct  {
       unsigned CF: 1;
       unsigned dont_care1: 1;
       unsigned PF: 1;
@@ -152,7 +152,7 @@ void difftest_step(uint32_t eip) {
   if (cpu.CF != ref_eflags_p->CF) {
     printf("CF differs: %d\t%d\n", cpu.CF, ref_eflags_p->CF);
     failed = true;
-  }
+  }*/
 
   if (failed) {
     nemu_state = NEMU_ABORT;
