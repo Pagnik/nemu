@@ -89,7 +89,7 @@ make_EHelper(cmp) {
   rtl_and(&t1, &t1, &t2);
   rtl_set_OF(&t1);
 
-  
+
   print_asm_template2(cmp);
 }
 
