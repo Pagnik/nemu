@@ -43,7 +43,18 @@ static inline make_DopHelper(SI) {
    */
   
   //TODO();
-  op->simm = (signed) instr_fetch(eip, op->width);
+  switch (op->width) {
+    case 1: {
+      signed char ib = (signed char) instr_fetch(eip, op->width);
+      op->simm = (int32_t) ib;
+      break;
+    }
+    case 4: {
+      op->simm = (int32_t) instr_fetch(eip, op->width);
+      break;
+    }
+  }
+  
   rtl_li(&op->val, op->simm);
 
 #ifdef DEBUG
