@@ -69,11 +69,27 @@ make_EHelper(sub) {
 
 make_EHelper(cmp) {
   //TODO();
-  WRONG, CHECK E2G DHELPER
-  rtl_sext(&t0, &id_src2->val, id_src->width);
-  rtl_add(&t1, &id_src->val, &t0);
+  
+  rtl_sub(&t0, &id_dest->val, &id_src->val);
 
-  rtl_update_ZFSF(&t1, id_src->width);
+  rtl_update_ZFSF(&t0, id_dest->width);
+
+  rtl_setrelop(RELOP_LTU, &t1, &id_src->val, &id_dest->val);  // t1: (a < b)
+  rtl_set_CF(&t1);
+
+
+  // a - b = c, OF =  (sign(a) != sign(b)) && (sign(b) == sign(c))
+  rtl_msb(&t1, &id_dest->val, id_dest->width);    // t1: sign(a)
+  rtl_msb(&t2, &id_src->val, id_src->width);      // t2: sign(b)
+  rtl_xor(&t1, &t1, &t2);     // t1: sign(a) != sign(b)
+
+  rtl_msb(&t3, &t0, id_dest->width);  // t3: sign(c)
+  rtl_setrelop(RELOP_EQ, &t2, &t2, &t3);           // t2: sign(b) == sign(c)
+
+  rtl_and(&t1, &t1, &t2);
+  rtl_set_OF(&t1);
+
+  
   print_asm_template2(cmp);
 }
 
