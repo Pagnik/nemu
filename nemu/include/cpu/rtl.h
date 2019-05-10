@@ -6,7 +6,7 @@
 #include "cpu/relop.h"
 #include "cpu/rtl-wrapper.h"
 
-extern rtlreg_t t0, t1, t2, t3, at;
+extern rtlreg_t t0, t1, t2, t3, at, at2;
 
 void decoding_set_jmp(bool is_jmp);
 bool interpret_relop(uint32_t relop, const rtlreg_t src1, const rtlreg_t src2);
@@ -198,9 +198,9 @@ static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
     const rtlreg_t *src1, int imm) {
   // dest <- (src1 relop imm ? 1 : 0)
   // TODO();
-
-  rtl_li(dest, imm);
-  interpret_rtl_setrelop(relop, dest, src1, dest);
+  
+  rtl_li(at2, imm);
+  interpret_rtl_setrelop(relop, dest, src1, at2);
 
 }
 
@@ -239,6 +239,9 @@ make_rtl_setget_eflags(SF)
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   //TODO();
+
+  // fxxking memory aliasing bug
+
   rtl_shli(&at, result, 32 - width * 8);
   rtl_setrelopi(RELOP_EQ, &at, &at, 0);
   rtl_set_ZF(&at);

@@ -3,7 +3,7 @@
 
 /* shared by all helper functions */
 DecodeInfo decoding;
-rtlreg_t t0, t1, t2, t3, at;
+rtlreg_t t0, t1, t2, t3, at, at2;
 
 void decoding_set_jmp(bool is_jmp) {
   decoding.is_jmp = is_jmp;
