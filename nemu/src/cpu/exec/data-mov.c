@@ -26,6 +26,7 @@ make_EHelper(pop) {
 
 
   rtl_pop(&id_dest->val);
+  operand_write(id_dest, &id_dest->val);
   print_asm_template1(pop);
 }
 
@@ -46,7 +47,7 @@ make_EHelper(leave) {
 
   cpu.esp = cpu.ebp;
   rtl_pop(&cpu.ebp);
-
+  operand_write(id_dest, &id_dest->val);
   print_asm("leave");
 }
 
