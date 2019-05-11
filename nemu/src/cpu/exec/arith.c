@@ -144,8 +144,8 @@ make_EHelper(neg) {
   
   rtl_update_ZFSF(&t0, id_dest->width);
 
-  rtl_msa(&t1, &id_dest->val);
-  rtl_msa(&t2, &t1);  
+  rtl_msb(&t1, &id_dest->val, id_dest->width);
+  rtl_msb(&t2, &t1, id_dest->width);  
   operand_write(id_dest, &t0);
 
   rtl_setrelop(RELOP_EQ, &t3, &t1, &t2);
