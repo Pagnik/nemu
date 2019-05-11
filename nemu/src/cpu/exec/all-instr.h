@@ -33,3 +33,17 @@ make_EHelper(leave);
 
 make_EHelper(adc);
 make_EHelper(or);
+
+make_EHelper(sar);
+
+make_EHelper(shl);
+
+make_EHelper(shr);
+
+make_EHelper(not);
+
+make_EHelper(inc);
+make_EHelper(dec);
+make_EHelper(neg);
+make_EHelper(pusha);
+make_EHelper(popa);

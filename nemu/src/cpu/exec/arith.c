@@ -96,20 +96,61 @@ make_EHelper(cmp) {
 }
 
 make_EHelper(inc) {
-  TODO();
+  // TODO();
+  rtl_addi(&t0, &id_dest->val, 1);
+  operand_write(id_dest, &t0);
+  rtl_update_ZFSF(&t0, id_dest->width);
 
+  rtl_msb(&t1, &id_dest->val, id_dest->width);    // t1 = ori sign
+  rtl_msb(&t2, &t0, id_dest->width);      // t2 = new sign
+  
+  // OF = t1 & !t2
+  rtl_setrelopi(RELOP_EQ, &t2, &t2, 0);
+  rtl_and(&t1, &t1, &t2);
+  rtl_set_OF(&t1);
+
+
+  
   print_asm_template1(inc);
 }
 
 make_EHelper(dec) {
-  TODO();
+  // TODO();
+  rtl_subi(&t0, &id_dest->val, 1);
+  operand_write(id_dest, &t0);
+  rtl_update_ZFSF(&t0, id_dest->width);
+
+  rtl_msb(&t1, &id_dest->val, id_dest->width);    // t1 = ori sign
+  rtl_msb(&t2, &t0, id_dest->width);      // t2 = new sign
+  
+  // OF = !t1 & t2
+  rtl_setrelopi(RELOP_EQ, &t1, &t1, 0);
+  rtl_and(&t1, &t1, &t2);
+  rtl_set_OF(&t1);
 
   print_asm_template1(dec);
 }
 
 make_EHelper(neg) {
-  TODO();
+  //TODO();
 
+
+  rtl_setrelopi(RELOP_NE, &t0, &id_dest->val, 0);
+  rtl_set_CF(&t0);
+
+
+  rtl_not(&t0, &id_dest->val);
+  rtl_addi(&t0, &t0, 1);
+  
+  rtl_update_ZFSF(&t0, id_dest->width);
+
+  rtl_msa(&t1, &id_dest->val);
+  rtl_msa(&t2, &t1);  
+  operand_write(id_dest, &t0);
+
+  rtl_setrelop(RELOP_EQ, &t3, &t1, &t2);
+  rtl_set_OF(&t3);
+  
   print_asm_template1(neg);
 }
 

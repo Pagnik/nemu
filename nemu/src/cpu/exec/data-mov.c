@@ -11,10 +11,10 @@ make_EHelper(push) {
   //printf_debug("esp: %x, ebp: %x\n", cpu.esp, cpu.ebp);
   
   //printf_debug("val: %x, width: %d\n", id_dest->val, id_dest->width);
-
+  /*
   if (id_dest->width == 1) {
     rtl_sext(&id_dest->val, &id_dest->val, id_dest->width);
-  }
+  }*/
 
   rtl_push(&id_dest->val);
   //printf_debug("esp: %x, *esp: %x\n", cpu.esp, vaddr_read(cpu.esp, id_dest->width));
@@ -31,13 +31,30 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
-  TODO();
+  //TODO();
 
+  t0 = cpu.esp;
+  rtl_push(&cpu.eax);
+  rtl_push(&cpu.ecx);
+  rtl_push(&cpu.edx);
+  rtl_push(&cpu.ebx);
+  rtl_push(&t0);
+  rtl_push(&cpu.ebp);
+  rtl_push(&cpu.esi);
+  rtl_push(&cpu.edi);
   print_asm("pusha");
 }
 
 make_EHelper(popa) {
-  TODO();
+  //TODO();
+  rtl_pop(&cpu.eax);
+  rtl_pop(&cpu.ecx);
+  rtl_pop(&cpu.edx);
+  rtl_pop(&cpu.ebx);
+  rtl_pop(&t0);
+  rtl_pop(&cpu.ebp);
+  rtl_pop(&cpu.esi);
+  rtl_pop(&cpu.edi);
 
   print_asm("popa");
 }
@@ -47,7 +64,7 @@ make_EHelper(leave) {
 
   cpu.esp = cpu.ebp;
   rtl_pop(&cpu.ebp);
-  
+
   print_asm("leave");
 }
 
