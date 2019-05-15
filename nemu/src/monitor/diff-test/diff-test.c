@@ -119,7 +119,7 @@ void difftest_step(uint32_t eip) {
 
 
 
-  /*typedef struct  {
+  typedef struct  {
       unsigned CF: 1;
       unsigned dont_care1: 1;
       unsigned PF: 1;
@@ -135,8 +135,9 @@ void difftest_step(uint32_t eip) {
 
   __eflags_t *ref_eflags_p = (__eflags_t *) &ref_r.eflags;
 
+  printf_debug("SF: %d, OF: %d\n", ref_eflags_p->SF, ref_eflags_p->OF);
 
-
+  /*
   if (cpu.ZF != ref_eflags_p->ZF) {
     printf("ZF differs: %d\t%d\n", cpu.ZF, ref_eflags_p->ZF);
     failed = true;
