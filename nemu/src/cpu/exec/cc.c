@@ -13,43 +13,53 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
 
   // TODO: Query EFLAGS to determine whether the condition code is satisfied.
   // dest <- ( cc is satisfied ? 1 : 0)
+  rtlreg_t tmp;
+  // should I use RTL here?
   switch (subcode & 0xe) {
     case CC_O: {
       rtl_get_OF(dest);
+      rtl_andi(dest, dest, 1);
       break;
     }
     case CC_B: {
       rtl_get_CF(dest);
+      rtl_andi(dest, dest, 1);
       break;
     }
     case CC_E: {
       rtl_get_ZF(dest);
+      rtl_andi(dest, dest, 1);
       break;
     }
       
     case CC_BE: {
-      rtl_get_CF(&t0);
-      rtl_get_ZF(dest);
-      rtl_or(dest, dest, &t0);
+      rtl_get_CF(dest);
+      rtl_get_ZF(&tmp);
+      rtl_or(dest, dest, &tmp);
+      rtl_andi(dest, dest, 1);
       break;
     }
     case CC_S: {
       rtl_get_SF(dest);
+      rtl_andi(dest, dest, 1);
       break;
     }
     case CC_L: {
-      rtl_set_OF(&t0);
-      rtl_set_SF(&t1);
-      rtl_setrelop(RELOP_NE, dest, &t0, &t1);
+      rtl_set_OF(dest);
+      rtl_set_SF(&tmp);
+      rtl_xor(dest, dest, &tmp);
+      rtl_andi(dest, dest, 1);
       break;
     }
     case CC_LE: {
-      rtl_set_ZF(dest);
-      rtl_setrelopi(RELOP_EQ, dest, dest, 1);
-      rtl_set_SF(&t0);
-      rtl_set_OF(&t1);
-      rtl_setrelop(RELOP_NE, &t0, &t0, &t1);
-      rtl_and(dest, dest, &t0);
+
+      rtl_set_SF(dest);
+      rtl_set_OF(&tmp);
+      rtl_xor(dest, dest, &tmp);
+      rtl_set_ZF(&tmp);
+      rtl_or(dest, dest, &tmp);
+      rtl_andi(dest, dest, 1);
+      
       break;
     }
 
