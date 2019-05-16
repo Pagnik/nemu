@@ -48,3 +48,10 @@ make_EHelper(dec);
 make_EHelper(neg);
 make_EHelper(pusha);
 make_EHelper(popa);
+
+
+make_EHelper(mul);
+make_EHelper(imul1);
+make_EHelper(imul2);
+make_EHelper(div);
+make_EHelper(idiv);
