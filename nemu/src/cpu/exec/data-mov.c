@@ -70,10 +70,21 @@ make_EHelper(leave) {
 
 make_EHelper(cltd) {
   if (decoding.is_operand_size_16) {
-    TODO();
+    // TODO();
+    rtl_msb(&t0, &cpu.eax, 2);
+    rtl_xori(&t0, &t0, 1);
+    rtl_addi(&t0, &t0, ~0);
+    
+    *((uint16_t *) &cpu.edx) = t0;
+    
   }
   else {
-    TODO();
+    // TODO();
+    rtl_msb(&t0, &cpu.eax, 4);
+    rtl_xori(&t0, &t0, 1);
+    rtl_addi(&t0, &t0, ~0);
+    
+    cpu.edx = t0;
   }
 
   print_asm(decoding.is_operand_size_16 ? "cwtl" : "cltd");
