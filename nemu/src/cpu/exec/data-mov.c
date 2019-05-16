@@ -103,15 +103,16 @@ make_EHelper(cwtl) {
 
 make_EHelper(movsx) {
   id_dest->width = decoding.is_operand_size_16 ? 2 : 4;
-  rtl_sext(&t0, &id_src->val, id_src->width);
+  rtl_sext(&t0, &id_src->val, (id_dest->width) >> 1);
   operand_write(id_dest, &t0);
   print_asm_template2(movsx);
 }
 
 make_EHelper(movzx) {
   id_dest->width = decoding.is_operand_size_16 ? 2 : 4;
-  printf_debug("width: d%d, s%d, val: %x\n", id_dest->width, id_src->width, id_src->val);
-  operand_write(id_dest, &id_src->val);
+
+  rtl_andi(&t0, &id_src->val, 0xffff);
+  operand_write(id_dest, &t0);
 
   
   print_asm_template2(movzx);
