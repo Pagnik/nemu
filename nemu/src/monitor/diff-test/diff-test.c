@@ -135,7 +135,7 @@ void difftest_step(uint32_t eip) {
 
   __eflags_t *ref_eflags_p = (__eflags_t *) &ref_r.eflags;
 
-  printf_debug("SF: %d-%d, OF: %d-%d\n", cpu.SF, ref_eflags_p->SF, cpu.OF, ref_eflags_p->OF);
+  printf_debug("CF: %d-%d, OF: %d-%d\n", cpu.CF, ref_eflags_p->CF, cpu.OF, ref_eflags_p->OF);
 
   /*
   if (cpu.ZF != ref_eflags_p->ZF) {
