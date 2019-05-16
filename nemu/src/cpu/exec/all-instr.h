@@ -32,7 +32,7 @@ make_EHelper(test);
 make_EHelper(jmp);
 make_EHelper(jcc);
 make_EHelper(leave);
-
+make_EHelper(call_rm);
 
 make_EHelper(adc);
 make_EHelper(sbb);
