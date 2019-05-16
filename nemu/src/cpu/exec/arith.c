@@ -35,7 +35,7 @@ make_EHelper(add) {
 
 make_EHelper(sub) {
   //TODO();
-
+  printf_debug("%x - %x\n", id_dest->val, id_src->val);
   //printf_debug("$esp = %x, dest: %x  src: %x\n", cpu.esp, id_dest->val, id_src->val);
   if (id_src->width == 1 && (id_dest->width == 2 || id_dest->width == 4)) {
     rtl_sext(&id_src->val, &id_src->val, id_src->width);
