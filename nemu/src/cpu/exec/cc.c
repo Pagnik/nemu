@@ -45,18 +45,18 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
       break;
     }
     case CC_L: {
-      rtl_set_OF(dest);
-      rtl_set_SF(&tmp);
+      rtl_get_OF(dest);
+      rtl_get_SF(&tmp);
       rtl_xor(dest, dest, &tmp);
       rtl_andi(dest, dest, 1);
       break;
     }
     case CC_LE: {
 
-      rtl_set_SF(dest);
-      rtl_set_OF(&tmp);
+      rtl_get_SF(dest);
+      rtl_get_OF(&tmp);
       rtl_xor(dest, dest, &tmp);
-      rtl_set_ZF(&tmp);
+      rtl_get_ZF(&tmp);
       rtl_or(dest, dest, &tmp);
       rtl_andi(dest, dest, 1);
       
