@@ -51,7 +51,7 @@ char* strcat(char* dst, const char* src) {
 int strcmp(const char* s1, const char* s2) {
   int i = 0;
   int a, b;
-
+/*
   while (s1[i] != '\0' && s2[i] != '\0') {
     if (s1[i] != s2[i]) {
       a = (int) s1[i];
@@ -62,7 +62,7 @@ int strcmp(const char* s1, const char* s2) {
   a = (int) s1[i];
   b = (int) s2[i];
   return a - b;
-  /*
+  */
   while (1) {
     if (s1[i] != s2[i]) {
       a = (int) s1[i];
@@ -73,7 +73,7 @@ int strcmp(const char* s1, const char* s2) {
       return 0;
     }
     i++;
-  }*/
+  }
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {
@@ -81,7 +81,7 @@ int strncmp(const char* s1, const char* s2, size_t n) {
   int i = 0;
   int a, b;
 
-  
+  /*
   while (s1[i] != '\0' && s2[i] != '\0' && i < n) {
     if (s1[i] != s2[i]) {
       a = (int) s1[i];
@@ -95,9 +95,9 @@ int strncmp(const char* s1, const char* s2, size_t n) {
   a = (int) s1[i];
   b = (int) s2[i];
   return a - b;
+*/
 
-
-  /*
+  
   while (1) {
     if (i >= n) {
       return 0;
@@ -111,7 +111,7 @@ int strncmp(const char* s1, const char* s2, size_t n) {
       return 0;
     }
     i++;
-  }*/
+  }
 }
 
 void* memset(void* v,int c,size_t n) {
