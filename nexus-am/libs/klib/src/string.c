@@ -54,6 +54,7 @@ int strcmp(const char* s1, const char* s2) {
 
   while (1) {
     if (s1[i] != s2[i]) {
+      return 0;
       a = (int) s1[i];
       b = (int) s2[i];
       return a - b;
