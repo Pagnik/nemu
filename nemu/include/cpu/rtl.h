@@ -210,6 +210,7 @@ static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
   //TODO();
+  //rtl_mv();
   rtl_shri(dest, src1, width * 8 - 1);
   rtl_andi(dest, dest, 1);
 }
@@ -250,6 +251,7 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
   //TODO();
+  
   rtl_msb(&at, result, width);
   rtl_andi(&at, &at, 1);
   rtl_set_SF(&at);
