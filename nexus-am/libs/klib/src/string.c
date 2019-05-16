@@ -81,6 +81,23 @@ int strncmp(const char* s1, const char* s2, size_t n) {
   int i = 0;
   int a, b;
 
+  
+  while (s1[i] != '\0' && s2[i] != '\0' && i < n) {
+    if (s1[i] != s2[i]) {
+      a = (int) s1[i];
+      b = (int) s2[i];
+      return a - b;
+    }
+  }
+  if (i == n) {
+    return 0;
+  }
+  a = (int) s1[i];
+  b = (int) s2[i];
+  return a - b;
+
+
+  /*
   while (1) {
     if (i >= n) {
       return 0;
@@ -94,7 +111,7 @@ int strncmp(const char* s1, const char* s2, size_t n) {
       return 0;
     }
     i++;
-  }
+  }*/
 }
 
 void* memset(void* v,int c,size_t n) {
