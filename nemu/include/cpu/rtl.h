@@ -27,10 +27,10 @@ static inline void interpret_rtl_mv(rtlreg_t* dest, const rtlreg_t *src1) {
   } \
   /* Actually those of imm version are pseudo rtl instructions, \
    * but we define them here in the same macro */ \
-  /* immediate to $at.*/ \
+  /* immediate to $at2.*/ \
   static inline void concat(rtl_, name ## i) (rtlreg_t* dest, const rtlreg_t* src1, int imm) { \
-    rtl_li(&at, imm); \
-    rtl_ ## name (dest, src1, &at); \
+    rtl_li(&at2, imm); \
+    rtl_ ## name (dest, src1, &at2); \
   }
 
 make_rtl_arith_logic(add)
@@ -241,7 +241,7 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   //TODO();
 
-  // fxxking memory aliasing bug
+  // fxxking memory aliasing bug, why you have to use $at internally
 
   rtl_shli(&at, result, 32 - width * 8);
   rtl_setrelopi(RELOP_EQ, &at, &at, 0);
@@ -253,7 +253,7 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   //TODO();
   
   rtl_msb(&at, result, width);
-  rtl_andi(&at, &at, 1);
+  // rtl_andi(&at, &at, 1);
   rtl_set_SF(&at);
 }
 
