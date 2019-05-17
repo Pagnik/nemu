@@ -4,12 +4,15 @@
 #include <time.h>
 #include <unistd.h>
 
+#include <stdio.h>
+
 static struct timeval boot_time;
 
 
 size_t timer_read(uintptr_t reg, void *buf, size_t size) {
   switch (reg) {
     case _DEVREG_TIMER_UPTIME: {
+
       struct timeval now;
       gettimeofday(&now, NULL);
       long seconds = now.tv_sec - boot_time.tv_sec;

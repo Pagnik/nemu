@@ -6,8 +6,16 @@ int main(){
   _RTCReg rtc;
   _ioe_init();
   int sec = 1;
+
+
+  printf("123123141\n");
+  printf("123123141\n");printf("123123141\n");printf("123123141\n");
+  return 0;
+
   while (1) {
-    while(uptime() < 1000 * sec) ;
+    while(uptime() < 1000 * sec) {
+      printf("\n\n%d\n\n", uptime());
+    }
     get_timeofday(&rtc);
     printf("%d-%d-%d %02d:%02d:%02d GMT (", rtc.year, rtc.month, rtc.day, rtc.hour, rtc.minute, rtc.second);
     if (sec == 1) {

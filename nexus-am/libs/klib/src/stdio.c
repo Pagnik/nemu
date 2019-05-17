@@ -42,6 +42,8 @@ int d2str(char *out, int d) {
 
 
 int printf(const char *fmt, ...) {
+
+  
   char buf[10000];
   va_list args;
   va_start(args, fmt);
