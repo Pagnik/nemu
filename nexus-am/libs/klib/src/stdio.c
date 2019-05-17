@@ -5,6 +5,40 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
+int d2str(char *out, int d) {
+  int c = 0;
+  if (d == -2147483648) {
+	  strcpy(out, "-2147483648");
+    return 11;
+  }
+  if (d < 0) {
+    out[c++] = '-';
+    d = (-d);
+  }
+  
+  int a = 1000000000;
+	//printf("%d\n", ud);
+  while (d / a == 0 && a > 1) {
+    a /= 10;
+  }
+  for (; a > 0; a /= 10) {
+    out[c++] = (char) ('0' + (d / a));
+    d = d % a;
+  }
+
+  
+  return c;
+
+
+
+}
+
+
+
+
+
+
+
 int printf(const char *fmt, ...) {
   return 0;
 }
@@ -26,8 +60,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         switch (fmt[i++]) {
           case 'd': {
             int d = va_arg(ap, int);
-            itoa(d, out + j);
-            j += strlen(out + j);
+            j += d2str(out + j, d);
             break;
           }
 
