@@ -11,7 +11,9 @@ size_t timer_read(uintptr_t reg, void *buf, size_t size) {
       _UptimeReg *uptime = (_UptimeReg *)buf;
       
       uptime->hi = 0;//inl(_DEVREG_TIMER_UPTIME);
-      uptime->lo = inl(_DEVREG_TIMER_UPTIME) - boot_time;
+      uptime->lo = inl(_DEVREG_TIMER_UPTIME) /*- boot_time*/;
+
+      // printf("inl: %d\n", uptime->lo);
       return sizeof(_UptimeReg);
     }
     case _DEVREG_TIMER_DATE: {
@@ -30,5 +32,5 @@ size_t timer_read(uintptr_t reg, void *buf, size_t size) {
 
 void timer_init() {
   // should I get the boot time here?
-  boot_time = inl(_DEVREG_TIMER_UPTIME);
+  //boot_time = inl(_DEVREG_TIMER_UPTIME);
 }
