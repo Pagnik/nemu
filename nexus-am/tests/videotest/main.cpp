@@ -21,7 +21,7 @@ void redraw() {
   int h = screen_height() / N;
   int block_size = w * h;
 
-  printf("h: %d, w: %d\n", h, w);
+
   assert((uint32_t)block_size <= sizeof(color_buf) / sizeof(color_buf[0]));
 
   int x, y, k;
