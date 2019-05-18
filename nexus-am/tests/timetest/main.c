@@ -20,7 +20,7 @@ int main(){
 
   while (1) {
     while(uptime() < 1000 * sec) {
-      printf("\n\n%d\n\n", uptime());
+      ;
     }
     get_timeofday(&rtc);
     printf("%d-%d-%d %02d:%02d:%02d GMT (", rtc.year, rtc.month, rtc.day, rtc.hour, rtc.minute, rtc.second);
