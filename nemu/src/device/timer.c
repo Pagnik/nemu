@@ -13,6 +13,11 @@ void timer_intr() {
 
 static uint32_t *rtc_port_base;
 
+// use callback to simulated the simpliest IO device
+// the data isn't always prepared there beforehand,
+// it just callbacks when accessed. 
+
+
 void rtc_io_handler(ioaddr_t addr, int len, bool is_write) {
   if (!is_write) {
     struct timeval now;
