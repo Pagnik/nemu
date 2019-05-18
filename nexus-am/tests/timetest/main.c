@@ -8,8 +8,14 @@ int main(){
   int sec = 1;
 
 
+
   printf("123123141\n");
-  printf("123123141\n");printf("123123141\n");printf("123123141\n");
+  // printf("123123141\n");printf("123123141\n");printf("123123141\n");
+
+  // char str[123];
+  
+  // sprintf(str, "123123\n\n");
+  
   return 0;
 
   while (1) {

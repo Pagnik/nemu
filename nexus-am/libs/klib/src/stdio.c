@@ -43,7 +43,7 @@ int d2str(char *out, int d) {
 
 int printf(const char *fmt, ...) {
 
-  
+
   char buf[10000];
   va_list args;
   va_start(args, fmt);
@@ -63,14 +63,14 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   int i = 0;
   int j = 0;
   
-
+  //out[0] = '0';out[1] = '1';out[2] = '2';out[3] = '3';return 4;
 
   while (1) {
-    switch (fmt[i++]) {
+    switch (fmt[i]) {
 
 
       case '%': {
-
+        i++;
         switch (fmt[i++]) {
           case 'd': {
             int d = va_arg(ap, int);
@@ -94,6 +94,12 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         
         return j;
       }
+
+      default: {
+        out[j++] = fmt[i++];
+
+        break;
+      }
     
     
     }
@@ -107,7 +113,7 @@ int sprintf(char *out, const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
   vsprintf(out, fmt, args);
-
+  
   va_end(args);
   return 0;
 }
