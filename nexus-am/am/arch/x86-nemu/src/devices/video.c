@@ -11,6 +11,8 @@ static uint32_t* const fb __attribute__((used)) = (uint32_t *)0x40000;
 
 
 
+int W;
+int H;
 size_t video_read(uintptr_t reg, void *buf, size_t size) {
   switch (reg) {
     case _DEVREG_VIDEO_INFO: {
@@ -18,7 +20,7 @@ size_t video_read(uintptr_t reg, void *buf, size_t size) {
       int size_info = inl(SCREEN_PORT);
       info->width = (size_info & WIDTH_MASK) >> 16;
       info->height = size_info & HEIGHT_MASK;
-      printf("w: %d, h: %d\n", info->width, info->height);
+      //printf("w: %d, h: %d\n", info->width, info->height);
       return sizeof(_VideoInfoReg);
     }
   }
@@ -29,8 +31,7 @@ size_t video_write(uintptr_t reg, void *buf, size_t size) {
   switch (reg) {
     case _DEVREG_VIDEO_FBCTL: {
       _FBCtlReg *ctl = (_FBCtlReg *)buf;
-      int W = screen_width();
-      int H = screen_height();
+      
       //int size = screen_width() * screen_height();
       //for (int i = 0; i < size; i ++) fb[i] = i;
       if (ctl->sync) {
@@ -53,4 +54,6 @@ size_t video_write(uintptr_t reg, void *buf, size_t size) {
 }
 
 void vga_init() {
+  W = screen_width();
+  H = screen_height();
 }
