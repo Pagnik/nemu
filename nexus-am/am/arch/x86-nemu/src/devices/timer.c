@@ -4,14 +4,16 @@
 
 
 uint32_t boot_time;
+#define RTC_PORT 0x48
+
 
 size_t timer_read(uintptr_t reg, void *buf, size_t size) {
   switch (reg) {
     case _DEVREG_TIMER_UPTIME: {
       _UptimeReg *uptime = (_UptimeReg *)buf;
       
-      uptime->hi = 0;//inl(_DEVREG_TIMER_UPTIME);
-      uptime->lo = inl(_DEVREG_TIMER_UPTIME) /*- boot_time*/;
+      uptime->hi = 0;
+      uptime->lo = inl(RTC_PORT) - boot_time;
 
       // printf("inl: %d\n", uptime->lo);
       return sizeof(_UptimeReg);
@@ -32,5 +34,5 @@ size_t timer_read(uintptr_t reg, void *buf, size_t size) {
 
 void timer_init() {
   // should I get the boot time here?
-  //boot_time = inl(_DEVREG_TIMER_UPTIME);
+  boot_time = inl(RTC_PORT);
 }
