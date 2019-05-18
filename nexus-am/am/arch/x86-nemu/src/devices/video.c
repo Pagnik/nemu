@@ -5,12 +5,17 @@
 
 static uint32_t* const fb __attribute__((used)) = (uint32_t *)0x40000;
 
+#define SCREEN_PORT 0x100
+#define WIDTH_MASK 0xffff0000
+#define HEIGHT_MASK 0x0000ffff
+
 size_t video_read(uintptr_t reg, void *buf, size_t size) {
   switch (reg) {
     case _DEVREG_VIDEO_INFO: {
       _VideoInfoReg *info = (_VideoInfoReg *)buf;
-      info->width = 0;
-      info->height = 0;
+      int size_info = inl(SCREEN_PORT);
+      info->width = size_info & WIDTH_MASK;
+      info->height = size_info & HEIGHT_MASK;
       return sizeof(_VideoInfoReg);
     }
   }
@@ -21,7 +26,9 @@ size_t video_write(uintptr_t reg, void *buf, size_t size) {
   switch (reg) {
     case _DEVREG_VIDEO_FBCTL: {
       _FBCtlReg *ctl = (_FBCtlReg *)buf;
-
+      int i;
+      int size = screen_width() * screen_height();
+      for (i = 0; i < size; i ++) fb[i] = i;
       if (ctl->sync) {
         // do nothing, hardware syncs.
       }
