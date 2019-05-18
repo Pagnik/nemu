@@ -51,9 +51,10 @@ void update() {
     for (int j = 0; j < N; j ++) {
       used[i][j] = false;
     }
-
+  printf("work1\n");
   int init = tsc * 1;
   canvas[0][0] = p(init); used[0][0] = true;
+  printf("work2\n");
   int x = 0, y = 0, d = 0;
   for (int step = 1; step < N * N; step ++) {
     for (int t = 0; t < 4; t ++) {
@@ -80,7 +81,6 @@ int main() {
     if (upt - last > 1000 / FPS) {
       
       update();
-      printf("work\n");
       redraw();
       last = upt;
     }
