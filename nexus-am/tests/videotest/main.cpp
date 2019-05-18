@@ -78,6 +78,7 @@ int main() {
 
   while (true) {
     unsigned long upt = uptime();
+    printf("uptime: %d\n", upt);
     if (upt - last > 1000 / FPS) {
       
       update();
