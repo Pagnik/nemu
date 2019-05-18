@@ -24,7 +24,7 @@ void init_difftest(char *ref_so_file, long img_size) {
 
   void *handle;
   handle = dlopen(ref_so_file, RTLD_LAZY | RTLD_DEEPBIND);
-  printf("error: %s\n", dlerror());
+  //printf("error: %s\n", dlerror());
   assert(handle);
 
   ref_difftest_memcpy_from_dut = dlsym(handle, "difftest_memcpy_from_dut");
