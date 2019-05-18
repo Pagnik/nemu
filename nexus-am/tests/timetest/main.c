@@ -9,14 +9,14 @@ int main(){
 
 
 
-  printf("123123141\n");
+  // printf("123123141\n");
   // printf("123123141\n");printf("123123141\n");printf("123123141\n");
 
   // char str[123];
   
   // sprintf(str, "123123\n\n");
   
-  return 0;
+  //return 0;
 
   while (1) {
     while(uptime() < 1000 * sec) {
