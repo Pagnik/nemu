@@ -78,8 +78,9 @@ int main() {
   while (true) {
     unsigned long upt = uptime();
     if (upt - last > 1000 / FPS) {
-      printf("work\n");
+      
       update();
+      printf("work\n");
       redraw();
       last = upt;
     }
