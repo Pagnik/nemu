@@ -119,6 +119,7 @@ int sprintf(char *out, const char *fmt, ...) {
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
+  printf("snprintf not implemented\n");
   return 0;
 }
 
