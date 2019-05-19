@@ -19,7 +19,7 @@ ISA_DEF = __ISA_$(shell echo $(ISA) | tr a-z A-Z)__
 
 INCLUDES  = $(addprefix -I, $(INC_DIR)) -I$(AM_HOME)/am/
 INCLUDES += -I$(AM_HOME)/am/arch/$(ARCH)/include
-CFLAGS   += -std=gnu11 -O2 -MMD -Wall r -ggdb $(INCLUDES) -D$(ISA_DEF) -fno-builtin #-Werro
+CFLAGS   += -std=gnu11 -O2 -MMD -Wall -ggdb $(INCLUDES) -D$(ISA_DEF) -fno-builtin #-Werro
 CXXFLAGS += -std=c++11 -O2 -MMD -Wall -ggdb $(INCLUDES) -D$(ISA_DEF) -fno-builtin #-Werror
 ASFLAGS  +=                -MMD                     $(INCLUDES) -D$(ISA_DEF)
 
