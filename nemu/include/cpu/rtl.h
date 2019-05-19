@@ -32,7 +32,6 @@ static inline void interpret_rtl_mv(rtlreg_t* dest, const rtlreg_t *src1) {
     rtl_li(&at2, imm); \
     rtl_ ## name (dest, src1, &at2); \
   }
-
 make_rtl_arith_logic(add)
 make_rtl_arith_logic(sub)
 make_rtl_arith_logic(and)
