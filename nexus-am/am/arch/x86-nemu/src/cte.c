@@ -32,10 +32,15 @@ esp
 eip for return2
 
 */
+
+/*
+
+
+*/
 _Context* irq_handle(_Context *tf) {
-  /*for (int i = 0; i < 50; i++) {
+  for (int i = 0; i < 50; i++) {
     printf("%d\n", tf->tmp[i]);
-  }*/
+  }
   printf("irq: %d\n", tf->irq);
   _Context *next = tf; 
   if (user_handler) {
