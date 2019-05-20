@@ -13,6 +13,9 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   rtl_push(&ret_addr);
   // TODO: check NO < limits , then what to do?
   GateDesc *idt = vaddr_read(cpu.idtr.base, 4);
+
+
+  
   rtl_j(idt[NO].offset_31_16);
 }
 
