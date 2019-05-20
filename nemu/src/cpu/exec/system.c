@@ -6,15 +6,15 @@ void difftest_skip_dut();
 make_EHelper(lidt) {
   // TODO();
 
-  rtl_lm(cpu.idtr.limit, id_dest->val, 2);
+  rtl_lm(&cpu.idtr.limit, id_dest->addr, 2);
   
   switch (id_dest->width) {
     case 2: {
-      rtl_lm(&cpu.idtr.base, id_dest->val + 2, 3);
+      rtl_lm(&cpu.idtr.base, id_dest->addr + 2, 3);
       break;
     }
     case 4: {
-      rtl_lm(&cpu.idtr.base, id_dest->val + 2, 4);
+      rtl_lm(&cpu.idtr.base, id_dest->addr + 2, 4);
       break;
     }
   }
