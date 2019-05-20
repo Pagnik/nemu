@@ -9,7 +9,7 @@
 typedef uint32_t size_t;
 
 struct _Context {
-
+  // QUESTION: why we don't have to skip the return eip?
   union {
     struct {
       //uintptr_t why_esp;
@@ -23,7 +23,7 @@ struct _Context {
       uintptr_t cs;
       uintptr_t eflags;
     };
-    uintptr_t tmp[50];
+    //uintptr_t tmp[50];
   };
   
 };
