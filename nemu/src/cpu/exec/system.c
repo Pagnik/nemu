@@ -42,7 +42,26 @@ make_EHelper(iret) {
 }
 
 make_EHelper(in) {
-  TODO();
+  // TODO();
+  switch (id_dest->width) {
+    case 1: {
+      id_dest->val = pio_read_b(id_src->val);
+      operand_write(id_dest, &id_dest->val);
+      break;
+    }
+    case 2: {
+      id_dest->val = pio_read_w(id_src->val);
+      operand_write(id_dest, &id_dest->val);
+      break;
+    }
+    case 4: {
+      id_dest->val = pio_read_l(id_src->val);
+      operand_write(id_dest, &id_dest->val);
+      break;
+    }
+  }
+
+
 
   print_asm_template2(in);
 
@@ -52,8 +71,21 @@ make_EHelper(in) {
 }
 
 make_EHelper(out) {
-  TODO();
-
+  // TODO();
+  switch (id_src->width) {
+    case 1: {
+      pio_write_b(id_dest->val, id_src->val);
+      break;
+    }
+    case 2: {
+      pio_write_w(id_dest->val, id_src->val);
+      break;
+    }
+    case 4: {
+      pio_write_l(id_dest->val, id_src->val);
+      break;
+    }
+  }
   print_asm_template2(out);
 
 #if defined(DIFF_TEST)

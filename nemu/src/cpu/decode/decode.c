@@ -3,7 +3,7 @@
 
 /* shared by all helper functions */
 DecodeInfo decoding;
-rtlreg_t t0, t1, t2, t3, at;
+rtlreg_t t0, t1, t2, t3, at, at2;
 
 void decoding_set_jmp(bool is_jmp) {
   decoding.is_jmp = is_jmp;
@@ -32,7 +32,7 @@ static inline make_DopHelper(I) {
 /* sign immediate */
 static inline make_DopHelper(SI) {
   assert(op->width == 1 || op->width == 4);
-  
+
   op->type = OP_TYPE_IMM;
 
   /* TODO: Use instr_fetch() to read `op->width' bytes of memory
@@ -43,14 +43,17 @@ static inline make_DopHelper(SI) {
    */
   
   //TODO();
+
   switch (op->width) {
     case 1: {
-      signed char ib = (signed char) instr_fetch(eip, op->width);
+
+      signed char ib = (signed char) instr_fetch(eip, 1);
       op->simm = (int32_t) ib;
       break;
     }
+
     case 4: {
-      op->simm = (int32_t) instr_fetch(eip, op->width);
+      op->simm = (int32_t) instr_fetch(eip, 4);
       break;
     }
   }
@@ -205,6 +208,8 @@ make_DHelper(E) {
 make_DHelper(setcc_E) {
   decode_op_rm(eip, id_dest, false, NULL, false);
 }
+
+
 
 make_DHelper(gp7_E) {
   decode_op_rm(eip, id_dest, false, NULL, false);

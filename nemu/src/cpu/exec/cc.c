@@ -13,18 +13,55 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
 
   // TODO: Query EFLAGS to determine whether the condition code is satisfied.
   // dest <- ( cc is satisfied ? 1 : 0)
+  rtlreg_t tmp;
+  // should I use RTL here?
   switch (subcode & 0xe) {
-    case CC_O: TODO(); break;
-    case CC_B:TODO();break;
+    case CC_O: {
+      rtl_get_OF(dest);
+      rtl_andi(dest, dest, 1);
+      break;
+    }
+    case CC_B: {
+      rtl_get_CF(dest);
+      rtl_andi(dest, dest, 1);
+      break;
+    }
     case CC_E: {
       rtl_get_ZF(dest);
+      rtl_andi(dest, dest, 1);
       break;
     }
       
-    case CC_BE:TODO();break;
-    case CC_S:TODO();break;
-    case CC_L:TODO();break;
-    case CC_LE:TODO();break;
+    case CC_BE: {
+      rtl_get_CF(dest);
+      rtl_get_ZF(&tmp);
+      rtl_or(dest, dest, &tmp);
+      rtl_andi(dest, dest, 1);
+      break;
+    }
+    case CC_S: {
+      rtl_get_SF(dest);
+      rtl_andi(dest, dest, 1);
+      break;
+    }
+    case CC_L: {
+      rtl_get_OF(dest);
+      rtl_get_SF(&tmp);
+      rtl_xor(dest, dest, &tmp);
+      rtl_andi(dest, dest, 1);
+      break;
+    }
+    case CC_LE: {
+
+      rtl_get_SF(dest);
+      rtl_get_OF(&tmp);
+      rtl_xor(dest, dest, &tmp);
+      rtl_get_ZF(&tmp);
+      rtl_or(dest, dest, &tmp);
+      rtl_andi(dest, dest, 1);
+      
+      break;
+    }
 
     default: panic("should not reach here");
     case CC_P: panic("n86 does not have PF");

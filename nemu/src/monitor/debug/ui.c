@@ -111,6 +111,7 @@ static int cmd_w(char *args) {
   return 0;
 }
 
+
 static int cmd_d(char *args) {
   int n = strtol(args, NULL, 10);
   return free_wp(n);

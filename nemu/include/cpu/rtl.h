@@ -6,7 +6,7 @@
 #include "cpu/relop.h"
 #include "cpu/rtl-wrapper.h"
 
-extern rtlreg_t t0, t1, t2, t3, at;
+extern rtlreg_t t0, t1, t2, t3, at, at2;
 
 void decoding_set_jmp(bool is_jmp);
 bool interpret_relop(uint32_t relop, const rtlreg_t src1, const rtlreg_t src2);
@@ -25,12 +25,12 @@ static inline void interpret_rtl_mv(rtlreg_t* dest, const rtlreg_t *src1) {
   static inline void concat(interpret_rtl_, name) (rtlreg_t* dest, const rtlreg_t* src1, const rtlreg_t* src2) { \
     *dest = concat(c_, name) (*src1, *src2); \
   } \
-  /* Actually those of imm version are pseudo rtl instructions,
+  /* Actually those of imm version are pseudo rtl instructions, \
    * but we define them here in the same macro */ \
-  /* immediate to $at.*/ \
+  /* immediate to $at2.*/ \
   static inline void concat(rtl_, name ## i) (rtlreg_t* dest, const rtlreg_t* src1, int imm) { \
-    rtl_li(&at, imm); \
-    rtl_ ## name (dest, src1, &at); \
+    rtl_li(&at2, imm); \
+    rtl_ ## name (dest, src1, &at2); \
   }
 
 make_rtl_arith_logic(add)
@@ -198,9 +198,9 @@ static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
     const rtlreg_t *src1, int imm) {
   // dest <- (src1 relop imm ? 1 : 0)
   // TODO();
-
-  rtl_li(dest, imm);
-  interpret_rtl_setrelop(relop, dest, src1, dest);
+  
+  rtl_li(&at2, imm);
+  interpret_rtl_setrelop(relop, dest, src1, &at2);
 
 }
 
@@ -210,6 +210,7 @@ static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
   //TODO();
+  //rtl_mv();
   rtl_shri(dest, src1, width * 8 - 1);
   rtl_andi(dest, dest, 1);
 }
@@ -223,7 +224,7 @@ enum {
 #define make_rtl_setget_eflags(f) \
   static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \
     /*TODO();*/ \
-    cpu.f &= *src; \
+    cpu.f = *src; \
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
    /* TODO();*/ \
@@ -239,6 +240,9 @@ make_rtl_setget_eflags(SF)
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   //TODO();
+
+  // fxxking memory aliasing bug, why you have to use $at internally
+
   rtl_shli(&at, result, 32 - width * 8);
   rtl_setrelopi(RELOP_EQ, &at, &at, 0);
   rtl_set_ZF(&at);
@@ -247,8 +251,9 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
   //TODO();
+  
   rtl_msb(&at, result, width);
-  rtl_andi(&at, &at, 1);
+  // rtl_andi(&at, &at, 1);
   rtl_set_SF(&at);
 }
 

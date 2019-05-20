@@ -34,7 +34,7 @@ void init_vga() {
       SDL_TEXTUREACCESS_STATIC, SCREEN_W, SCREEN_H);
 
   screensize_port_base = add_pio_map(SCREEN_PORT, 4, NULL);
-  *screensize_port_base = ((SCREEN_W) << 16) | (SCREEN_H);
+  *screensize_port_base = ((SCREEN_W) << 16) | (SCREEN_H);    // size
   vmem = add_mmio_map(VMEM, 0x80000, NULL);
 }
 #endif	/* HAS_IOE */

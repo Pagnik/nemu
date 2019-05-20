@@ -20,6 +20,8 @@ void redraw() {
   int w = screen_width() / N;
   int h = screen_height() / N;
   int block_size = w * h;
+
+
   assert((uint32_t)block_size <= sizeof(color_buf) / sizeof(color_buf[0]));
 
   int x, y, k;
@@ -51,12 +53,14 @@ void update() {
     for (int j = 0; j < N; j ++) {
       used[i][j] = false;
     }
-
+  //printf("work1\n");
   int init = tsc * 1;
   canvas[0][0] = p(init); used[0][0] = true;
+  //printf("work2\n");
   int x = 0, y = 0, d = 0;
   for (int step = 1; step < N * N; step ++) {
     for (int t = 0; t < 4; t ++) {
+      //printf("%d %d\n", step, t);
       int x1 = x + dx[d], y1 = y + dy[d];
       if (x1 >= 0 && x1 < N && y1 >= 0 && y1 < N && !used[x1][y1]) {
         x = x1; y = y1;
@@ -77,7 +81,9 @@ int main() {
 
   while (true) {
     unsigned long upt = uptime();
+    //printf("uptime: %d\n", upt);
     if (upt - last > 1000 / FPS) {
+      
       update();
       redraw();
       last = upt;

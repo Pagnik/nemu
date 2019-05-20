@@ -24,6 +24,7 @@ void init_difftest(char *ref_so_file, long img_size) {
 
   void *handle;
   handle = dlopen(ref_so_file, RTLD_LAZY | RTLD_DEEPBIND);
+  //printf("error: %s\n", dlerror());
   assert(handle);
 
   ref_difftest_memcpy_from_dut = dlsym(handle, "difftest_memcpy_from_dut");
@@ -51,9 +52,35 @@ void init_difftest(char *ref_so_file, long img_size) {
   ref_difftest_setregs(&cpu);
 }
 
-void difftest_step(uint32_t eip) {
-  CPU_state ref_r;
 
+
+union gdb_regs {
+  struct {
+    uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
+    uint32_t eip, eflags;
+    uint32_t cs, ss, ds, es, fs, gs;
+  };
+  struct {
+    uint32_t array[77];
+  };
+};
+
+/*
+struct {
+  int idx;
+  char name[8];
+} gpr_table[] = {
+  {0, "eax"}, {1, "ecx"}, {2, "edx"}, {3, "ebx"}, {4, "esp"},
+  {5, "ebp"}, {6, "esi"}, {7, "edi"},
+};
+*/
+static char* gpr_names[] = {
+    "$eax", "$ecx", "$edx", "$ebx", "$esp", "$ebp", "$esi", "$edi",
+  };
+
+void difftest_step(uint32_t eip) {
+  // CPU_state ref_r;
+  union gdb_regs ref_r;
   if (is_skip_dut) {
     is_skip_dut = false;
     return;
@@ -69,7 +96,70 @@ void difftest_step(uint32_t eip) {
   ref_difftest_exec(1);
   ref_difftest_getregs(&ref_r);
 
+  
+  
   // TODO: Check the registers state with the reference design.
   // Set `nemu_state` to `NEMU_ABORT` if they are not the same.
-  TODO();
+  //TODO();
+
+  // no need to invoke difftest_getregs here, 
+  // just use the global cpu
+  uint32_t *dut_r_p = (uint32_t *) &cpu;
+  bool failed = false;
+  for (int i = 0; i < 8; i++) {
+    if (dut_r_p[i] != ref_r.array[i]) {
+      printf("%s differs: %x\t%x\n", gpr_names[i], dut_r_p[i], ref_r.array[i]);
+      failed = true;
+    }
+  }
+  
+  if (cpu.eip != ref_r.eip) {
+    printf("eip differs: %x\t%x\n", cpu.eip, ref_r.eip);
+    failed = true;
+  }
+
+
+
+  typedef struct  {
+      unsigned CF: 1;
+      unsigned dont_care1: 1;
+      unsigned PF: 1;
+      unsigned dont_care3: 1;
+      unsigned AF: 1;
+      unsigned dont_care5: 1;
+      unsigned ZF: 1;
+      unsigned SF: 1;
+      unsigned dont_care8_9_10: 3;
+      unsigned OF: 1;
+      unsigned dont_care: 20;
+  } __eflags_t;
+
+  __eflags_t *ref_eflags_p = (__eflags_t *) &ref_r.eflags;
+
+  //printf_debug("CF: %d-%d, OF: %d-%d\n", cpu.CF, ref_eflags_p->CF, cpu.OF, ref_eflags_p->OF);
+
+  /*
+  if (cpu.ZF != ref_eflags_p->ZF) {
+    printf("ZF differs: %d\t%d\n", cpu.ZF, ref_eflags_p->ZF);
+    failed = true;
+  }
+  if (cpu.OF != ref_eflags_p->OF) {
+    printf("OF differs: %d\t%d\n", cpu.OF, ref_eflags_p->OF);
+    failed = true;
+  }
+  if (cpu.SF != ref_eflags_p->SF) {
+    printf("SF differs: %d\t%d\n", cpu.SF, ref_eflags_p->SF);
+    failed = true;
+  }
+  if (cpu.CF != ref_eflags_p->CF) {
+    printf("CF differs: %d\t%d\n", cpu.CF, ref_eflags_p->CF);
+    failed = true;
+  }*/
+
+  if (failed) {
+    nemu_state = NEMU_ABORT;
+  }
+
+
+
 }
