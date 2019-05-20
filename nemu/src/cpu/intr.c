@@ -16,6 +16,8 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   vaddr_t id_p = cpu.idtr.base + NO * sizeof(GateDesc);
 
   vaddr_t ofst = 0;
+
+  printf("NO: %d\n", NO);
   ofst = (vaddr_t) vaddr_read(id_p, 2);
   ofst = ((vaddr_t) vaddr_read(id_p + sizeof(GateDesc) - 2, 2) << 16) | ofst;
 
