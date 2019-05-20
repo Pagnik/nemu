@@ -28,6 +28,21 @@ struct _Context {
   
 };
 
+
+/*
+0
+1916655708
+485293249
+31688
+31668
+1445038994
+16
+1050824
+0
+129
+0
+*/
+
 #define GPR1 eax
 #define GPR2 eip
 #define GPR3 eip
