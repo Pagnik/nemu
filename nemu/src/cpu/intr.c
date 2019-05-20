@@ -12,11 +12,16 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   //rtl_push(cpu.eip);
   rtl_push(&ret_addr);
   // TODO: check NO < limits , then what to do?
-  GateDesc *idt = vaddr_read(cpu.idtr.base, 4);
+  
+  vaddr_t id_p = cpu.idtr.base + NO * sizeof(GateDesc);
+
+  vaddr_t ofst = 0;
+  ofst = (vaddr_t) vaddr_read(id_p, 2);
+  ofst = ((vaddr_t) vaddr_read(id_p + sizeof(GateDesc) - 2, 2) << 16) | ofst;
 
 
   
-  rtl_j(idt[NO].offset_31_16);
+  rtl_j(ofst);
 }
 
 void dev_raise_intr() {
