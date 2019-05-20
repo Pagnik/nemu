@@ -33,7 +33,9 @@ eip for return2
 
 */
 _Context* irq_handle(_Context *tf) {
-  printf("%d\n, $esp: %d\n", tf->irq, tf->esp);
+  for (int i = 0; i < 50; i++) {
+    printf("%d\n", tf->tmp[i]);
+  }
   _Context *next = tf; 
   if (user_handler) {
     _Event ev = {0};
