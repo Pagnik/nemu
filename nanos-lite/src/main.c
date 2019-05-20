@@ -31,5 +31,7 @@ int main() {
   _yield();
 #endif
 
+
+  printf("hello!\n");
   panic("Should not reach here");
 }
