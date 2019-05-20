@@ -6,8 +6,8 @@ void difftest_skip_dut();
 make_EHelper(lidt) {
   // TODO();
 
-  rtl_lm(&cpu.idtr.limit, id_dest->addr, 2);
-  
+  //rtl_lm(&cpu.idtr.limit, id_dest->addr, 2);
+  cpu.idtr.limit = vaddr(id_dest->addr, 2);
   switch (id_dest->width) {
     case 2: {
       rtl_lm(&cpu.idtr.base, id_dest->addr + 2, 3);
