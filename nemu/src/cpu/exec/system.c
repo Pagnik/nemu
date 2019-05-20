@@ -10,11 +10,12 @@ make_EHelper(lidt) {
   cpu.idtr.limit = vaddr_read(id_dest->addr, 2);
   switch (id_dest->width) {
     case 2: {
-      rtl_lm(&cpu.idtr.base, id_dest->addr + 2, 3);
+
+      cpu.idtr.base = vaddr_read(id_dest->addr + 2, 3);
       break;
     }
     case 4: {
-      rtl_lm(&cpu.idtr.base, id_dest->addr + 2, 4);
+      cpu.idtr.base = vaddr_read(id_dest->addr + 2, 4);
       break;
     }
   }
