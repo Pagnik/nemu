@@ -9,7 +9,7 @@ asm_trap:
 
   pushl $0       # for prot
 
-  pushl %esp
+  pushl %esp      # this esp is irq of argument _Context
   call irq_handle
 
   addl $4, %esp
@@ -19,3 +19,6 @@ asm_trap:
   addl $8, %esp
 
   iret
+
+
+

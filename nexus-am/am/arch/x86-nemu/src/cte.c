@@ -6,6 +6,32 @@ static _Context* (*user_handler)(_Event, _Context*) = NULL;
 void vectrap();
 void vecnull();
 
+
+
+/*
+eflags
+cs
+eip for return0
+
+
+errorcode           
+irq
+eip for return1
+
+
+eax
+ecx
+edx
+ebx
+esp
+ebp
+esi
+edi
+prot
+esp
+eip for return2
+
+*/
 _Context* irq_handle(_Context *tf) {
   printf("%d\n, $esp: %d\n", tf->irq, tf->esp);
   _Context *next = tf; 
