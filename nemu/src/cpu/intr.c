@@ -6,7 +6,14 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
    * That is, use ``NO'' to index the IDT.
    */
 
-  TODO();
+  // TODO();
+  rtl_push(cpu.eflags);
+  rtl_push(cpu.cs);
+  //rtl_push(cpu.eip);
+  rtl_push(&decoding.seq_eip);
+  
+  GateDesc *idt = vaddr_read(cpu.idtr.base, 4);
+  rtl_j(idt[NO].offset_31_16);
 }
 
 void dev_raise_intr() {
