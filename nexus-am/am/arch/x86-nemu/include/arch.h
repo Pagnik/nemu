@@ -49,7 +49,7 @@ struct _Context {
 #define GPR4 edx
 
 // ?????
-#define GPRx eip
+#define GPRx eax
 
 #ifdef __cplusplus
 extern "C" {
