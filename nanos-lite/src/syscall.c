@@ -11,6 +11,7 @@ static inline int sys_yield() {
 }
 
 static inline int sys_write(int fd, char *buf, int count) {
+  
   if (fd == 1 || fd == 2) {
     for (int i = 0; i < count; i++) {
       _putc(buf[i]);
