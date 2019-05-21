@@ -43,7 +43,7 @@ void *_sbrk(intptr_t increment){
   intptr_t new_brk = cur_brk + increment;
   intptr_t res = _syscall_(SYS_brk, new_brk, 0, 0);
   if (res == 0) {
-    intptr_t old_brk = new_brk;
+    intptr_t old_brk = new_brk;asdfasfasfdasdf
     cur_brk = new_brk;
     return (void *) old_brk;
   } else {
