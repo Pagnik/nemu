@@ -23,7 +23,7 @@ struct _Context {
       uintptr_t cs;
       uintptr_t eflags;
     };
-    //uintptr_t tmp[50];
+    uintptr_t val[50];
   };
   
 };
