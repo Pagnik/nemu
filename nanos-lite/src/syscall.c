@@ -12,7 +12,7 @@ _Context* do_syscall(_Context *c) {
     case SYS_yield: {
 
       _yield();
-
+      c->GPRx = 0;
       break;
     }
 
@@ -20,7 +20,7 @@ _Context* do_syscall(_Context *c) {
       for (int i = 0; i < 4; i ++) {
         printf("gpr: %d\n", a[i]);
       }
-      _halt(0);
+      _halt(a[1]);
       break;
     }
     default: panic("Unhandled syscall ID = %d", a[0]);
