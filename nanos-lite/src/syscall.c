@@ -13,6 +13,11 @@ _Context* do_syscall(_Context *c) {
 
       break;
     }
+
+    case SYS_exit: {
+      _halt(c->GPR2);
+      break;
+    }
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
