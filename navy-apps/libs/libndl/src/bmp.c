@@ -27,10 +27,9 @@ int NDL_LoadBitmap(NDL_Bitmap *bmp, const char *filename) {
   w = h = 0;
 
   if (!(fp = fopen(filename, "r"))) {
-    printf("1 %d\n", fp);
     return -1;
   }
-  printf("2 %d\n", fp);
+  
   struct BitmapHeader hdr;
   
   assert(sizeof(hdr) == 54);
@@ -39,7 +38,10 @@ int NDL_LoadBitmap(NDL_Bitmap *bmp, const char *filename) {
   
 
   if (hdr.bitcount != 24) return -1;
+
+  printf("1 %d\n", hdr.bitcount);
   if (hdr.compression != 0) return -1;
+  printf("2 %d\n", hdr.compression);
   pixels = (uint32_t*)malloc(hdr.width * hdr.height * sizeof(uint32_t));
   if (!pixels) return -1;
 
