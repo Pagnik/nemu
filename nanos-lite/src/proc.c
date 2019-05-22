@@ -20,7 +20,7 @@ void hello_fun(void *arg) {
 }
 
 
-#define TARGET_FILE_NAME "/bin/text"
+#define TARGET_FILE_NAME "/bin/hello"
 void init_proc() {
   naive_uload(NULL, TARGET_FILE_NAME);
 }
