@@ -54,7 +54,9 @@ static Finfo file_table[] __attribute__((used)) = {
 void init_fs() {
   // TODO: initialize the size of /dev/fb
   assert(strcmp(file_table[NR_FB].name, "/dev/fb") == 0);
-  file_table[NR_FB].size = screen_height() * screen_width();
+  file_table[NR_FB].size = screen_height() * 4 * screen_width() * 4;
+
+  printf("fb size: %d\n", file_table[NR_FB].size);
 }
 
 
