@@ -35,12 +35,19 @@ int _write(int fd, void *buf, size_t count){
   return _syscall_(SYS_write, fd, buf, count);
 }
 extern char *_end;
-intptr_t cur_brk = (intptr_t)&_end;
-void *_sbrk(intptr_t increment){
-  intptr_t new_brk = cur_brk + increment;
-  intptr_t res = _syscall_(SYS_brk, new_brk, 0, 0);
+int cur_brk = (int )&_end;
+void *_sbrk(int increment){
+  int new_brk = cur_brk + increment;
+  int res = _syscall_(SYS_brk, new_brk, 0, 0);
   if (res == 0) {
-    intptr_t old_brk = new_brk;
+    int old_brk = new_brk;
+
+    char tmp[123];
+    sprintf(tmp, "return brk: %d\n", old_brk);
+    int l = strlen(tmp);
+    for (int i = 0; i < l; i++) {
+      _write(1, tmp, l);
+    }
     cur_brk = new_brk;
     //printf("sbrk succeed, %d\n", old_brk);
     return (void *) old_brk;
