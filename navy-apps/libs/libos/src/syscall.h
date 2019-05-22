@@ -1,16 +1,16 @@
 #ifndef __SYSCALL_H__
 #define __SYSCALL_H__
 enum {
-  SYS_exit,
+  SYS_exit,   // 0
   SYS_yield,
-  SYS_open,
+  SYS_open,   // 2
   SYS_read,
   SYS_write,
   SYS_kill,
   SYS_getpid,
   SYS_close,
   SYS_lseek,
-  SYS_brk,
+  SYS_brk,    // 9
   SYS_fstat,
   SYS_time,
   SYS_signal,
@@ -19,7 +19,7 @@ enum {
   SYS_link,
   SYS_unlink,
   SYS_wait,
-  SYS_times,
+  SYS_times,    // 18
   SYS_gettimeofday
 };
 
