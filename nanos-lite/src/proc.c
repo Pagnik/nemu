@@ -19,8 +19,10 @@ void hello_fun(void *arg) {
   }
 }
 
+
+#define TARGET_FILE_NAME "/bin/text"
 void init_proc() {
-  naive_uload(NULL, NULL);
+  naive_uload(NULL, TARGET_FILE_NAME);
 }
 
 _Context* schedule(_Context *prev) {

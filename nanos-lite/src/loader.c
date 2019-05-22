@@ -2,12 +2,20 @@
 
 #define DEFAULT_ENTRY 0x4000000
 
+extern int fs_open(const char *pathname, int flags, int mode);
+extern size_t fs_read(int fd, void *buf, size_t len);
+extern size_t fs_filesz(int fd);
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
   // TODO();
   
-  size_t ramdisk_size = get_ramdisk_size();
+  /*size_t ramdisk_size = get_ramdisk_size();
   
-  ramdisk_read(DEFAULT_ENTRY, 0, ramdisk_size);
+  ramdisk_read(DEFAULT_ENTRY, 0, ramdisk_size);*/
+
+  int fd = fs_open(filename, 0, 0);
+  int fsize = fs_filesz(fd);
+  fs_read(fd, (void *) DEFAULT_ENTRY, fsize);
 
   return DEFAULT_ENTRY;
 }
