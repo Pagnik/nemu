@@ -3,7 +3,8 @@
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 
-
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+size_t ramdisk_write(void *buf, size_t offset, size_t len);
 
 
 typedef struct {
@@ -69,7 +70,7 @@ int fs_close(int fd) {
 
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
-  size_t new_offset;
+  size_t new_offset = file_table[fd].open_offset;
   switch (whence) {
     case SEEK_SET: {
       /*assert((file_table[fd].size >= offset));
@@ -85,6 +86,9 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
       //file_table[fd].open_offset = file_table[fd].size;
       new_offset = offset + file_table[fd].size;
       break;
+    }
+    default: {
+      panic("shouldn't reach here");
     }
   }
 
