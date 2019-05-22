@@ -76,7 +76,9 @@ _Context* do_syscall(_Context *c) {
       break;
     }
     case SYS_brk: {
+
       c->GPRx = sys_brk(a[1]);
+      printf("brk %d, %d\n", a[1], c->GPRx);
       break;
     }
     case SYS_open: {

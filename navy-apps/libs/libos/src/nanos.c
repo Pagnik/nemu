@@ -42,10 +42,10 @@ void *_sbrk(intptr_t increment){
   if (res == 0) {
     intptr_t old_brk = new_brk;
     cur_brk = new_brk;
-    printf("sbrk succeed, %d\n", old_brk);
+    //printf("sbrk succeed, %d\n", old_brk);
     return (void *) old_brk;
   } else {
-    printf("sbrk failed\n");
+    //printf("sbrk failed\n");
     return (void *) -1;
   }
 }
