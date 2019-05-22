@@ -81,6 +81,7 @@ _Context* do_syscall(_Context *c) {
     }
     case SYS_open: {
       c->GPRx = fs_open((const char*) a[1], a[2], a[3]);
+      printf("fd: %d\n", c->GPRx);
       break;
     }
     case SYS_close: {
