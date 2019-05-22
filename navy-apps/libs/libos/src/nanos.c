@@ -40,13 +40,11 @@ void *_sbrk(intptr_t increment){
   intptr_t new_brk = cur_brk + increment;
   intptr_t res = _syscall_(SYS_brk, new_brk, 0, 0);
   if (res == 0) {
-BRK_SUC:
     intptr_t old_brk = new_brk;
     cur_brk = new_brk;
     //printf("sbrk succeed, %d\n", old_brk);
     return (void *) old_brk;
   } else {
-BRK_FAILED:
     //printf("sbrk failed\n");
     return (void *) -1;
   }
