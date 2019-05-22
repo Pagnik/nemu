@@ -10,7 +10,7 @@ static _Context* do_event(_Event e, _Context* c) {
       break;
     }
     case _EVENT_SYSCALL: {
-      printf("syscall id: %d\n", c->GPR1);
+      //printf("syscall id: %d\n", c->GPR1);
       do_syscall(c);
       break;
     }
