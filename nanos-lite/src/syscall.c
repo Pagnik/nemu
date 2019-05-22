@@ -17,22 +17,24 @@ static inline int sys_yield() {
 
 static inline int sys_write(int fd, char *buf, int count) {
   
-  if (fd == 1 || fd == 2) {
+  /*if (fd == 1 || fd == 2) {
     for (int i = 0; i < count; i++) {
       _putc(buf[i]);
     }
     return count;
   } else {
     return fs_write(fd, (void *) buf, count);
-  }
+  }*/
+  return fs_write(fd, (void *) buf, count);
 }
 static inline int sys_read(int fd, char *buf, int count) {
   
-  if (fd == 0) {
+  /*if (fd == 0) {
     panic("not implemented\n");
   } else {
     return fs_read(fd, (void *) buf, count);
-  }
+  }*/
+  return fs_read(fd, (void *) buf, count);
 }
 static inline int sys_exit(int status) {
   _halt(status);
