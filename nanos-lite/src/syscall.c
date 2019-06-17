@@ -25,6 +25,8 @@ static inline int sys_write(int fd, char *buf, int count) {
   } else {
     return fs_write(fd, (void *) buf, count);
   }*/
+
+  //printf("count: %d\n", count);
   return fs_write(fd, (void *) buf, count);
 }
 static inline int sys_read(int fd, char *buf, int count) {
@@ -90,6 +92,7 @@ _Context* do_syscall(_Context *c) {
       break;
     }
     case SYS_lseek: {
+      printf("a1: %d, a2: %d, a3: %d\n", a[1], a[2], a[3]);
       c->GPRx = fs_lseek(a[1], a[2], a[3]);
       break;
     }

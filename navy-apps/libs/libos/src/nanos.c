@@ -34,23 +34,32 @@ int _open(const char *path, int flags, mode_t mode) {
 int _write(int fd, void *buf, size_t count){
   return _syscall_(SYS_write, fd, buf, count);
 }
+
 extern char *_end;
-int cur_brk = (int )&_end;
+
+int cur_brk;
 void *_sbrk(int increment){
+  if (cur_brk == 0) {
+    cur_brk = &_end;
+  }
   int new_brk = cur_brk + increment;
   int res = _syscall_(SYS_brk, new_brk, 0, 0);
-  if (res == 0) {
-    int old_brk = new_brk;
+  int ori_brk = cur_brk;
 
-    char tmp[123];
-    sprintf(tmp, "return brk: %d\n", old_brk);
-    int l = strlen(tmp);
-    for (int i = 0; i < l; i++) {
-      _write(1, tmp, l);
-    }
+  
+  /*char tmp[123];
+  sprintf(tmp, "res: %d, ori brk: %d, new brk: %d\n", res, ori_brk, new_brk);
+  int l = strlen(tmp);
+  _write(1, tmp, l);
+  */
+
+  if (res == 0) {
+    
+
+    
     cur_brk = new_brk;
-    //printf("sbrk succeed, %d\n", old_brk);
-    return (void *) old_brk;
+    //printf("sbrk succeed, %d\n", ori_brk);
+    return (void *) ori_brk;
   } else {
     //printf("sbrk failed\n");
     return (void *) -1;
@@ -66,6 +75,12 @@ int _close(int fd) {
 }
 
 off_t _lseek(int fd, off_t offset, int whence) {
+  /*char tmp[123];
+  sprintf(tmp, "fd: %d, offset: %d, whence: %d\n", fd, offset, whence);
+  int l = strlen(tmp);
+  for (int i = 0; i < l; i++) {
+    _write(1, tmp, l);
+  }*/
   return _syscall_(SYS_lseek, fd, offset, whence);
 }
 

@@ -7,7 +7,15 @@ void init_irq(void);
 void init_fs(void);
 void init_proc(void);
 
+
+// this is really a hack
+// damn
+
+
+
 int main() {
+
+
 #ifdef HAS_VME
   init_mm();
 #endif

@@ -95,6 +95,7 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
       break;
     }
     default: {
+      printf("fd: %d offset: %d, whence: %d\n", fd, offset, whence);
       panic("shouldn't reach here");
     }
   }
@@ -107,6 +108,7 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
+  printf("read fd#%d\n", fd);
   size_t res;
   if (file_table[fd].read != NULL) {
     res = file_table[fd].read(buf, file_table[fd].open_offset, len);
@@ -122,6 +124,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
+  printf("write fd#%d len: %d\n", fd, len);
   size_t res;
   if (file_table[fd].write != NULL) {
     res = file_table[fd].write(buf, file_table[fd].open_offset, len);
