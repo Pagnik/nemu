@@ -47,11 +47,11 @@ void *_sbrk(int increment){
   int ori_brk = cur_brk;
 
   
-  /*char tmp[123];
+  char tmp[123];
   sprintf(tmp, "res: %d, ori brk: %d, new brk: %d\n", res, ori_brk, new_brk);
   int l = strlen(tmp);
   _write(1, tmp, l);
-  */
+  
 
   if (res == 0) {
     
