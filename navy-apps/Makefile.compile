@@ -44,7 +44,7 @@ ifeq ($(ISA), x86)
 endif
 
 ifeq ($(ISA), am_native)
-  CFLAGS_COMMON = -fno-builtin -fno-stack-protector -fno-omit-frame-pointer  -mstringop-strategy=unrolled_loop -ggdb3 -fno-reorder-functions
+  CFLAGS_COMMON = -fno-builtin -fno-stack-protector -fno-omit-frame-pointer  -mstringop-strategy=unrolled_loop -ggdb3 -fno-reorder-functions -DNO_FLOATING_POINT
   CFLAGS   += $(CFLAGS_COMMON)
   CXXFLAGS += $(CFLAGS_COMMON) -ffreestanding -fno-rtti -fno-exceptions
 endif
