@@ -1,17 +1,5 @@
 # ICS2018 Programming Assignment
 
-This project is the programming assignment of the class ICS(Introduction to Computer System) in Department of Computer Science and Technology, Nanjing University.
+这是综合课设的作业项目, 借用了南京大学的计算机系统导论课程作业2018版本. 目标是实现一个较完整的计算机系统模拟器, 从底层的cpu到上层的OS都会简单实现. 作业要求类似MIT的JOS, 一开始大框架已经给出, 一些具体的功能要根据作业文档自己实现.
 
-For the guide of this programming assignment,
-refer to http://nju-ics.gitbooks.io/ics2018-programming-assignment/content/
-
-To initialize, run
-```bash
-bash init.sh
-```
-
-The following subprojects/components are included. Some of them are not fully implemented.
-* [NEMU](https://github.com/NJU-ProjectN/nemu)
-* [Nexus-am](https://github.com/NJU-ProjectN/nexus-am)
-* [Nanos-lite](https://github.com/NJU-ProjectN/nanos-lite)
-* [Navy-apps](https://github.com/NJU-ProjectN/navy-apps)
+我那门课要求的是完成到pa2, 用大约2014年左右的版本. 我自己使用的2018版本, 完成了pa3, 能运行仙剑奇侠传1程序并播放完开头动画, 但接下来遇到了链接时的错误, 询问NJU的作者(https://github.com/NJU-ProjectN/ics-pa/issues/4), 得知是向2019版本迁移时留下的bug.
